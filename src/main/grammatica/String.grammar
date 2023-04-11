@@ -1,0 +1,35 @@
+%header%
+
+GRAMMARTYPE = "LL"
+
+%tokens%
+
+quote      = <<">>
+characters = <<[ -!#-\[\]-\uFFFE]+>>
+escapeQuote
+           = <<\\">>
+escapeBackslash
+           = <<\\\\>>
+escapeSlash
+           = <<\\/>>
+escapeB    = <<\\b>>
+escapeF    = <<\\f>>
+escapeN    = <<\\n>>
+escapeR    = <<\\r>>
+escapeT    = <<\\t>>
+escapeU    = <<\\u[0-9A-Fa-f]{4}>>
+
+%productions%
+
+string     = quote ( characters | escape )* quote
+           ;
+escape     = escapeQuote
+           | escapeBackslash
+           | escapeSlash
+           | escapeB
+           | escapeF
+           | escapeN
+           | escapeR
+           | escapeT
+           | escapeU
+           ;

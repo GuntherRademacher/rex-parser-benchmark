@@ -1,0 +1,43 @@
+%header%
+
+GRAMMARTYPE = "LL"
+
+%tokens%
+
+true                         = "true"
+false                        = "false"
+null                         = "null"
+lbrace                       = "{"
+comma                        = ","
+rbrace                       = "}"
+colon                        = ":"
+lbracket                     = "["
+rbracket                     = "]"
+string                       = <<"([ -!#-\[\]-\uFFFE]+|\\["\\/bfnrt]|\\u[0-9A-Fa-f]{4})*">>
+int                          = <<-?([1-9]|[0-9]+)>>
+double                       = <<-?([1-9]|[0-9]+)((\.[0-9]*)([Ee][-+]?[0-9]+)?|(\.[0-9]*)?([Ee][-+]?[0-9]+))>>
+ws                           = <<[ \t\n\r]+>> %ignore%
+
+%productions%
+
+json       = value
+           ;
+value      = object
+           | array
+           | string
+           | int
+           | double
+           | "true"
+           | "false"
+           | "null"
+           ;
+object     = "{" ( member ( "," member )* )? "}"
+           ;
+member     = key ":" value
+           ;
+key        = string
+           ;
+array      = "[" ( element ( "," element )* )? "]"
+           ;
+element    = value
+           ;

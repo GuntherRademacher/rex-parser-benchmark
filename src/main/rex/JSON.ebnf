@@ -1,0 +1,99 @@
+/* converted on Fri Jun 14, 2019, 12:50 (UTC+02) by w3c-to-w3c v0.49 which is Copyright (c) 2011-2019 by Gunther Rademacher <grd@gmx.net> */
+
+                                                            <?java
+                                                              package de.bottlecaps.rex.benchmark.json.rex;
+
+                                                              import com.fasterxml.jackson.databind.JsonNode;
+                                                              import com.fasterxml.jackson.databind.node.ArrayNode;
+                                                              import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+                                                              import com.fasterxml.jackson.databind.node.ObjectNode;
+                                                              import de.bottlecaps.rex.benchmark.json.parsers.ResultFactory;
+                                                              import java.util.Arrays;
+                                                              import java.util.Stack;
+
+                                                              public class JSON_XXXX {
+                                                            ?>
+json     ::= value eof
+value    ::= object                                         <?java value = objects.pop();?>
+           | array                                          <?java value = arrays.pop();?>
+           | number
+           | string                                         <?java value = factory.textNode(sb.toString());?>
+           | boolean
+           | null
+object   ::=                                                <?java objects.push(factory.objectNode());?>
+             '{' ( member ( ',' member )* )? '}'
+member   ::= string                                         <?java keys.push(sb.toString());?>
+                    ':' value                               <?java objects.peek().set(keys.pop(), value);?>
+array    ::=                                                <?java arrays.push(factory.arrayNode());?>
+             '[' ( element ( ',' element )* )? ']'
+element  ::= value                                          <?java arrays.peek().add(value);?>
+number   ::= int                                            <?java
+                                                              try {
+                                                                value = factory.numberNode(Integer.parseInt(token()));
+                                                              }
+                                                              catch (NumberFormatException e) {
+                                                                value = factory.numberNode(Long.parseLong(token()));
+                                                              }
+                                                            ?>
+           | double                                         <?java value = factory.numberNode(Double.parseDouble(token()));?>
+string   ::=                                                <?java sb.setLength(0);?>
+             '"' ( unescaped                                <?java sb.append(token());?>
+                             | escaped )* '"'
+          /* ws: explicit */
+escaped  ::= '\"'                                           <?java sb.append('"');?>
+           | '\\'                                           <?java sb.append('\\');?>
+           | '\/'                                           <?java sb.append('/');?>
+           | '\b'                                           <?java sb.append('\b');?>
+           | '\f'                                           <?java sb.append('\f');?>
+           | '\n'                                           <?java sb.append('\n');?>
+           | '\r'                                           <?java sb.append('\r');?>
+           | '\t'                                           <?java sb.append('\t');?>
+           | '\u' hex4                                      <?java sb.append(unhex(token()));?>
+          /* ws: explicit */
+boolean  ::= 'true'                                         <?java value = factory.booleanNode(true);?>
+           | 'false'                                        <?java value = factory.booleanNode(false);?>
+null     ::= 'null'                                         <?java value = factory.nullNode();?>
+
+<?TOKENS?>
+
+unescaped
+         ::= ( [#x0020-#x10FFFF] - ["\] )+
+hex4     ::= hex hex hex hex
+hex      ::= digit
+           | [A-Fa-f]
+double   ::= int frac? exp
+           | int frac exp?
+int      ::= '-'? ( digit | onenine digits )
+digits   ::= digit+
+digit    ::= '0'
+           | onenine
+onenine  ::= [1-9]
+frac     ::= ( '.' digits )
+exp      ::= ( ( 'E' | 'e' ) sign digits )
+sign     ::= ( '+' | '-' )?
+ws       ::= [#x0009#x000A#x000D#x0020]+
+          /* ws: definition */
+eof      ::= $
+                                                            <?ENCORE?>
+
+                                                            <?java
+                                                                private StringBuilder sb = new StringBuilder();
+                                                                private JsonNodeFactory factory = ResultFactory.getJsonNodeFactory();
+                                                                private JsonNode value;
+                                                                private Stack<ArrayNode> arrays = new Stack<>();
+                                                                private Stack<ObjectNode> objects = new Stack<>();
+                                                                private Stack<String> keys = new Stack<>();
+
+                                                                private String token() {
+                                                                  return input.toString().substring(b0, e0);
+                                                                }
+
+                                                                private String unhex(String value) {
+                                                                  return Character.valueOf((char) Integer.parseInt(value, 16)).toString();
+                                                                }
+
+                                                                public JsonNode getValue() {
+                                                                  return value;
+                                                                }
+                                                              }
+                                                            ?>

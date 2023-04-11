@@ -1,0 +1,167 @@
+plugins {
+    id 'java'
+    id 'antlr'
+    id 'com.intershop.gradle.javacc' version '4.1.3'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url 'https://files.basex.org/maven/'
+    }
+}
+
+dependencies {
+    antlr 'org.antlr:antlr4:4.12.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    implementation 'org.jfree:jfreechart:1.5.4'
+    implementation 'org.jfree:jcommon:1.0.24'
+    implementation files('build/lib/grammatica-1.6.jar')
+    implementation 'org.basex:basex:10.6-SNAPSHOT'
+    implementation 'org.nineml:coffeefilter:1.99.13'
+    implementation 'org.nineml:coffeegrinder:1.99.12'
+    implementation 'org.nineml:coffeesacks:1.99.14'
+    implementation 'net.sf.saxon:Saxon-HE:12.0'
+    implementation 'org.xmlresolver:xmlresolver:4.6.0'
+}
+
+generateGrammarSource {
+    outputDirectory = file('build/generated/antlr/main/de/bottlecaps/rex/benchmark/json/antlr4')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ['src/main/javacc', 'src/main/grammatica', 'src/main/rex', ]
+            srcDirs += ['build/generated/antlr/main', 'build/generated/grammatica/main', 'build/generated/rex/main']
+        }
+    }
+}
+
+javacc {
+    javaCCVersion '7.0.10'
+    configs {
+        main {
+            inputFile = file('src/main/javacc/JSON.jj')
+            packageName = 'de.bottlecaps.rex.benchmark.json.javacc'
+        }
+    }
+}
+
+task rex {
+    doLast {
+        def llTarget = file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/rex/JSON_LL.java')
+        rexGenerate(
+            file('src/main/rex/JSON.ebnf'),
+            llTarget,
+            '-ll 1 -java -a java'
+        )
+        ant.replace(file: llTarget, token: 'JSON_XXXX', value: 'JSON_LL')
+        def lalrTarget = file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/rex/JSON_LALR.java')
+        rexGenerate(
+            file('src/main/rex/JSON.ebnf'),
+            lalrTarget,
+            '-lalr 1 -java -a java'
+        )
+        ant.replace(file: lalrTarget, token: 'JSON_XXXX', value: 'JSON_LALR')
+        rexGenerate(
+            file('src/main/rex/JSON.ebnf'),
+            file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/parsers/xquery/json-ll.xquery'),
+            '-ll 1 -xquery -tree'
+        )
+        rexGenerate(
+            file('src/main/rex/JSON.ebnf'),
+            file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/parsers/xquery/json-lalr.xquery'),
+            '-lalr 1 -xquery -tree'
+        )
+        rexGenerate(
+            file('src/main/rex/JSON.ebnf'),
+            file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/parsers/xquery/RExLL.java'),
+            '-ll 1 -java -basex -saxon -tree -name de.bottlecaps.rex.benchmark.json.parsers.xquery.RExLL'
+        )
+        rexGenerate(
+            file('src/main/rex/JSON.ebnf'),
+            file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/parsers/xquery/RExLALR.java'),
+            '-lalr 1 -java -basex -saxon -tree -name de.bottlecaps.rex.benchmark.json.parsers.xquery.RExLALR'
+        )
+    }
+}
+
+def rexGenerate(ebnf, target, command) {
+    if (! target.exists() || target.lastModified() <= ebnf.lastModified()) {
+        def inputFileName = ebnf.getName()
+        def inputFileContent = ebnf.text
+        mkdir target.parent
+        println 'generating REx parser: ' + target.name
+        new URL('https://bottlecaps.de/rex').openConnection().with {
+            addRequestProperty 'Content-Type', 'multipart/form-data; boundary=11c3f844-5603-4b02-8f16-fb4006d7b022'
+            doOutput = true
+            requestMethod = 'POST'
+            outputStream.withWriter { writer ->
+                writer << "--11c3f844-5603-4b02-8f16-fb4006d7b022\r\n"
+                writer << "Content-Disposition: form-data; name=\"command\"\r\n"
+                writer << "\r\n"
+                writer << "${command}\r\n"
+                writer << "--11c3f844-5603-4b02-8f16-fb4006d7b022\r\n"
+                writer << "Content-Disposition: form-data; name=\"input\"; filename=\"${inputFileName}\"\r\n"
+                writer << "Content-Type: text/plain\r\n"
+                writer << "\r\n"
+                writer << "${inputFileContent}\r\n"
+                writer << "--11c3f844-5603-4b02-8f16-fb4006d7b022--\r\n"
+            }
+            target.text = content.text
+        }
+    }
+}
+
+task downloadGrammatica {
+    doLast {
+        def jar = file('build/lib/grammatica-1.6.jar')
+        if (! jar.exists()) {
+            mkdir 'build/lib'
+            new URL('jar:https://github.com/cederberg/grammatica/releases/download/v1.6/grammatica-1.6.zip!/grammatica-1.6/lib/grammatica-1.6.jar').withInputStream{i -> jar.withOutputStream {it << i}}
+        }
+    }
+}
+
+task grammaticaJson(type: JavaExec) {
+    dependsOn downloadGrammatica
+
+    mainClass = '-jar'
+    args = ['build/lib/grammatica-1.6.jar',
+      'src/main/grammatica/JSON.grammar',
+      '--javaoutput', 'build/generated/grammatica/main',
+      '--javapackage', 'de.bottlecaps.rex.benchmark.json.grammatica',
+      '--javapublic']
+
+    doFirst {
+        mkdir 'build/generated/grammatica/main'
+    }
+}
+
+task grammaticaString(type: JavaExec) {
+    dependsOn downloadGrammatica
+
+    mainClass = '-jar'
+    args = ['build/lib/grammatica-1.6.jar',
+      'src/main/grammatica/String.grammar',
+      '--javaoutput', 'build/generated/grammatica/main',
+      '--javapackage', 'de.bottlecaps.rex.benchmark.json.grammatica',
+      '--javapublic']
+
+    doFirst {
+        mkdir 'build/generated/grammatica/main'
+    }
+}
+
+compileJava {
+    dependsOn rex, grammaticaJson, grammaticaString
+    options.compilerArgs += ["-Xlint:all"]
+}
+
+task run(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath
+    jvmArgs '-Dfile.encoding=utf-8'
+    mainClass = 'de.bottlecaps.rex.benchmark.json.Benchmark'
+}
