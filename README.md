@@ -136,6 +136,16 @@ So for running the XQuery benchmark on file `src/main/resources/8KB.json`, use t
 gradlew run --args="--platform xquery src/main/resources/8KB.json"
 ```
 
+## Benchmark results - Java
+
+![throughput-java](throughput-java.png)
+![memory-java](memory-java.png)
+
+## Benchmark results - XQuery
+
+![throughput-xquery](throughput-xquery.png)
+![memory-xquery](memory-xquery.png)
+
 ## License
 
 This project is subject to the [Apache 2 License][ASL].
