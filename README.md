@@ -43,13 +43,13 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 * `BaseXRExLL` - a REx-generated parser using the LL parsing algorithm, executed on BaseX.
 * `BaseXRExLALR` - a REx-generated parser using the LALR parsing algorithm, executed on BaseX.
 * `BaseXRExLLExternal` - a REx-generated parser using the LL parsing algorithm in an external function, executed on BaseX.
-* `BaseXRExLLExternal` - a REx-generated parser using the LALR parsing algorithm in an external function, executed on BaseX.
+* `BaseXRExLALRExternal` - a REx-generated parser using the LALR parsing algorithm in an external function, executed on BaseX.
 * `BaseXIxml` - a parser using [Invisible XML](https://invisiblexml.org/), implemented by [nineml.org](https://github.com/nineml) projects, executed on BaseX.
 * `SaxonX` - a reference implementation, directly using `fn:json-to-xml` executed on SaxonJ-HE.
 * `SaxonXRExLL` - a REx-generated parser using the LL parsing algorithm, executed on SaxonJ-HE.
 * `SaxonXRExLALR` - a REx-generated parser using the LALR parsing algorithm, executed on SaxonJ-HE.
 * `SaxonXRExLLExternal` - a REx-generated parser using the LL parsing algorithm in an external function, executed on SaxonJ-HE.
-* `SaxonXRExLLExternal` - a REx-generated parser using the LALR parsing algorithm in an external function, executed on SaxonJ-HE.
+* `SaxonXRExLALRExternal` - a REx-generated parser using the LALR parsing algorithm in an external function, executed on SaxonJ-HE.
 * `SaxonXIxml` - a parser using [Invisible XML](https://invisiblexml.org/), implemented by [nineml.org](https://github.com/nineml) projects, executed on SaxonJ-HE.
 
 ## Building rex-parser-benchmark
@@ -139,11 +139,13 @@ gradlew run --args="--platform xquery src/main/resources/8KB.json"
 ## Benchmark results - Java
 
 ![throughput-java](throughput-java.png)
+
 ![memory-java](memory-java.png)
 
 ## Benchmark results - XQuery
 
 ![throughput-xquery](throughput-xquery.png)
+
 ![memory-xquery](memory-xquery.png)
 
 ## License
