@@ -52,7 +52,6 @@ public abstract class AbstractSaxonParser extends AbstractParserInXQuery {
       serializer.setOutputProperty(Serializer.Property.OMIT_XML_DECLARATION, "yes");
       evaluator.run(serializer);
       return new String(outputStream.toByteArray(), StandardCharsets.UTF_8)
-          .replace("&#xD;", "")
           .replace("\r", "");
     }
   }

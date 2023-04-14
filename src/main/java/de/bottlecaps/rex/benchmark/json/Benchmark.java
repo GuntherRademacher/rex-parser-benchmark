@@ -140,7 +140,7 @@ public class Benchmark {
     Map<String, String> files = new HashMap<>(inputFiles);
     int factor = 1;
 
-    MemoryMonitor memoryMonitor = new MemoryMonitor();
+    MemoryMonitor memoryMonitor = new MemoryMonitor(null);
     memoryMonitor.start();
 
     try {
@@ -163,6 +163,8 @@ public class Benchmark {
   //          System.out.println("Used Memory before gc: " + Chart.formatSize(MemoryMonitor.memoryUsed(), 0));
             MemoryMonitor.triggerGC();
             long initialMemoryUsed = memoryMonitor.resetMaxMemoryUsed();
+            if (commandLine.heapDumpAt() != null)
+              memoryMonitor.setHeapDumpAt(initialMemoryUsed + commandLine.heapDumpAt());
   //          System.out.println("Used Memory  after gc: " + Chart.formatSize(initialMemoryUsed, 0));
             for (;;) {
               for (String input : files.values())

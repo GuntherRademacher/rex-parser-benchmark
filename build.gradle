@@ -19,11 +19,11 @@ dependencies {
     implementation 'org.jfree:jcommon:1.0.24'
     implementation files('build/lib/grammatica-1.6.jar')
     implementation 'org.basex:basex:10.6-SNAPSHOT'
-    implementation 'org.nineml:coffeefilter:1.99.13'
-    implementation 'org.nineml:coffeegrinder:1.99.12'
-    implementation 'org.nineml:coffeesacks:1.99.14'
-    implementation 'net.sf.saxon:Saxon-HE:12.0'
-    implementation 'org.xmlresolver:xmlresolver:4.6.0'
+    implementation 'org.nineml:coffeefilter:2.0.1'
+    implementation 'org.nineml:coffeegrinder:2.0.0'
+    implementation 'org.nineml:coffeesacks:2.0.0'
+    implementation 'net.sf.saxon:Saxon-HE:12.1'
+    implementation 'org.xmlresolver:xmlresolver:5.1.2'
 }
 
 generateGrammarSource {

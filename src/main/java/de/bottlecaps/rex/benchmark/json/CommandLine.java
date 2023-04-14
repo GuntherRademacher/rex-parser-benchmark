@@ -66,6 +66,7 @@ public class CommandLine {
   private int parseTime = 10;
   private int factor = 2;
   private boolean nest = false;
+  private Long heapDumpAt = null;
 
   public CommandLine(String[] args) {
     for (int a = 0; a < args.length; ++a) {
@@ -124,6 +125,16 @@ public class CommandLine {
       case "--nest":
         nest = true;
         break;
+      case "--heapdump":
+        try {
+          heapDumpAt = Size.valueOf(args[++a]);
+          if (heapDumpAt > 100_000_000)
+            break;
+        }
+        catch (Exception e) {
+        }
+        error("invalid --heapdump option");
+        break;
       default:
         if (arg.startsWith("-"))
           error("invalid option: " + arg);
@@ -179,6 +190,8 @@ public class CommandLine {
     System.out.println("                             after each test cycle (default 2)");
     System.out.println("  --nest                   nest JSON arrays, when increasing input size. By");
     System.out.println("                             default, a single top level array will be used.");
+    System.out.println("  --heapdump <SIZE>        dump heap when reaching <SIZE> (may contain fraction");
+    System.out.println("                             and unit MB or GB) to file java_<PID>.hprof.");
     System.exit(status);
   }
 
@@ -212,5 +225,9 @@ public class CommandLine {
 
   public boolean nest() {
     return nest;
+  }
+
+  public Long heapDumpAt() {
+    return heapDumpAt;
   }
 }

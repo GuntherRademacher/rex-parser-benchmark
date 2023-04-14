@@ -30,7 +30,6 @@ public abstract class AbstractBaseXParser extends AbstractParserInXQuery {
         for (Item item; (item = iter.next()) != null;)
           serializer.serialize(item);
         return new String(outputStream.toByteArray(), StandardCharsets.UTF_8)
-            .replace("&#xD;", "")
             .replace("\r", "");
       }
     }

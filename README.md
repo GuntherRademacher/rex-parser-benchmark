@@ -56,27 +56,7 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 
 Use Java 11 or higher to build.
 
-This project makes use of `org.nineml:coffeesacks:1.99.14`. As long as this has not been released (see [CoffeeSacks releases](https://github.com/nineml/coffeesacks/releases)), it can be built locally by
-
-```sh
-git clone https://github.com/nineml/coffeesacks.git
-cd coffeesacks
-gradlew publishToMavenLocal
-```
-
-This may fail with
-
-`Cannot perform signing task ':signMavenJavaPublication' because it has no configured signatory`
-
-But this can be avoided by commenting these three lines in `build.gradle` of the `coffeesacks` project:
-
-```gradle
-signing {
-  sign publishing.publications
-}
-```
-
-Then `rex-parser-benchmark` can be built by
+For building `rex-parser-benchmark`, use these commands:
 
 ```sh
 git clone https://github.com/GuntherRademacher/rex-parser-benchmark.git
@@ -128,6 +108,8 @@ Usage: java Benchmark <OPTION>... [<FILE>|<DIRECTORY>]
                              after each test cycle (default 2)
   --nest                   nest JSON arrays, when increasing input size. By
                              default, a single top level array will be used.
+  --heapdump <SIZE>        dump heap when reaching <SIZE> (may contain fraction
+                             and unit MB or GB) to file java_<PID>.hprof.
 ```
 
 So for running the XQuery benchmark on file `src/main/resources/8KB.json`, use this command:
