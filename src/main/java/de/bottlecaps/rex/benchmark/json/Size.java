@@ -1,7 +1,7 @@
-// This file was generated on Fri Apr 14, 2023 08:38 (UTC+02) by REx v5.57 which is Copyright (c) 1979-2023 by Gunther Rademacher <grd@gmx.net>
-// REx command line: ../../../../../../rex/size.ebnf -java -a java -name de.bottlecaps.rex.benchmark.json.Size
+// This file was generated on Sat Apr 15, 2023 11:21 (UTC+02) by REx v5.57 which is Copyright (c) 1979-2023 by Gunther Rademacher <grd@gmx.net>
+// REx command line: size.ebnf -java -a java -name de.bottlecaps.rex.benchmark.json.Size
 
-                                                            // line 2 "../../../../../../rex/size.ebnf"
+                                                            // line 2 "size.ebnf"
                                                             package de.bottlecaps.rex.benchmark.json;
 
                                                             public class Size
@@ -135,72 +135,103 @@
   {
     lookahead1(0);                  // double
     consume(1);                     // double
-                                                            // line 28 "../../../../../../rex/size.ebnf"
+                                                            // line 28 "size.ebnf"
                                                             value = Double.parseDouble(input.subSequence(b0, e0).toString());
                                                             // line 141 "Size.java"
-    lookahead1(3);                  // eof | 'B' | 'G' | 'K' | 'M' | 'T'
+    lookahead1(4);                  // ws | eof | 'B' | 'E' | 'G' | 'K' | 'M' | 'P' | 'T'
+    if (l1 == 2)                    // ws
+    {
+      consume(2);                   // ws
+    }
+    lookahead1(3);                  // eof | 'B' | 'E' | 'G' | 'K' | 'M' | 'P' | 'T'
     switch (l1)
     {
-    case 5:                         // 'K'
+    case 7:                         // 'K'
       {
-        consume(5);                 // 'K'
+        consume(7);                 // 'K'
         lookahead1(2);              // eof | 'B'
-        if (l1 == 3)                // 'B'
+        if (l1 == 4)                // 'B'
         {
-          consume(3);               // 'B'
+          consume(4);               // 'B'
         }
-                                                            // line 31 "../../../../../../rex/size.ebnf"
-                                                            value *= 1e3;
-                                                            // line 155 "Size.java"
+                                                            // line 32 "size.ebnf"
+                                                            value *= 1024.0;
+                                                            // line 160 "Size.java"
       }
       break;
-    case 6:                         // 'M'
+    case 8:                         // 'M'
       {
-        consume(6);                 // 'M'
+        consume(8);                 // 'M'
         lookahead1(2);              // eof | 'B'
-        if (l1 == 3)                // 'B'
+        if (l1 == 4)                // 'B'
         {
-          consume(3);               // 'B'
+          consume(4);               // 'B'
         }
-                                                            // line 32 "../../../../../../rex/size.ebnf"
-                                                            value *= 1e6;
-                                                            // line 168 "Size.java"
+                                                            // line 33 "size.ebnf"
+                                                            value *= 1024.0 * 1024.0;
+                                                            // line 173 "Size.java"
       }
       break;
-    case 4:                         // 'G'
+    case 6:                         // 'G'
       {
-        consume(4);                 // 'G'
+        consume(6);                 // 'G'
         lookahead1(2);              // eof | 'B'
-        if (l1 == 3)                // 'B'
+        if (l1 == 4)                // 'B'
         {
-          consume(3);               // 'B'
+          consume(4);               // 'B'
         }
-                                                            // line 33 "../../../../../../rex/size.ebnf"
-                                                            value *= 1e9;
-                                                            // line 181 "Size.java"
+                                                            // line 34 "size.ebnf"
+                                                            value *= 1024.0 * 1024.0 * 1024.0;
+                                                            // line 186 "Size.java"
       }
       break;
-    case 7:                         // 'T'
+    case 10:                        // 'T'
       {
-        consume(7);                 // 'T'
+        consume(10);                // 'T'
         lookahead1(2);              // eof | 'B'
-        if (l1 == 3)                // 'B'
+        if (l1 == 4)                // 'B'
         {
-          consume(3);               // 'B'
+          consume(4);               // 'B'
         }
-                                                            // line 34 "../../../../../../rex/size.ebnf"
-                                                            value *= 1e12;
-                                                            // line 194 "Size.java"
+                                                            // line 35 "size.ebnf"
+                                                            value *= 1024.0 * 1024.0 * 1024.0 * 1024.0;
+                                                            // line 199 "Size.java"
+      }
+      break;
+    case 9:                         // 'P'
+      {
+        consume(9);                 // 'P'
+        lookahead1(2);              // eof | 'B'
+        if (l1 == 4)                // 'B'
+        {
+          consume(4);               // 'B'
+        }
+                                                            // line 36 "size.ebnf"
+                                                            value *= 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;
+                                                            // line 212 "Size.java"
+      }
+      break;
+    case 5:                         // 'E'
+      {
+        consume(5);                 // 'E'
+        lookahead1(2);              // eof | 'B'
+        if (l1 == 4)                // 'B'
+        {
+          consume(4);               // 'B'
+        }
+                                                            // line 37 "size.ebnf"
+                                                            value *= 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;
+                                                            // line 225 "Size.java"
       }
       break;
     default:
-      if (l1 == 3)                  // 'B'
+      if (l1 == 4)                  // 'B'
       {
-        consume(3);                 // 'B'
+        consume(4);                 // 'B'
       }
     }
     lookahead1(1);                  // eof
-    consume(2);                     // eof
+    consume(3);                     // eof
   }
 
   private void consume(int t)
@@ -265,7 +296,7 @@
 
       state = code;
       int i0 = (charclass << 4) + code - 1;
-      code = TRANSITION[(i0 & 3) + TRANSITION[i0 >> 2]];
+      code = TRANSITION[(i0 & 7) + TRANSITION[i0 >> 3]];
 
       if (code > 15)
       {
@@ -295,11 +326,11 @@
   {
     java.util.ArrayList<String> expected = new java.util.ArrayList<>();
     int s = tokenSetId < 0 ? - tokenSetId : INITIAL[tokenSetId] & 15;
-    for (int i = 0; i < 8; i += 32)
+    for (int i = 0; i < 11; i += 32)
     {
       int j = i;
-      int i0 = (i >> 5) * 11 + s - 1;
-      int f = EXPECTED[(i0 & 3) + EXPECTED[i0 >> 2]];
+      int i0 = (i >> 5) * 13 + s - 1;
+      int f = EXPECTED[i0];
       for ( ; f != 0; f >>>= 1, ++j)
       {
         if ((f & 1) != 0)
@@ -313,49 +344,54 @@
 
   private static final int[] MAP0 =
   {
-    /*   0 */ 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /*  35 */ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 3, 0, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 7,
-    /*  70 */ 0, 8, 0, 0, 0, 9, 0, 10, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 7, 0, 8, 0,
-    /* 105 */ 0, 0, 9, 0, 10, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    /*   0 */ 14, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+    /*  35 */ 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 3, 4, 0, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 8,
+    /*  70 */ 0, 9, 0, 0, 0, 10, 0, 11, 0, 0, 12, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 8, 0, 9,
+    /* 104 */ 0, 0, 0, 10, 0, 11, 0, 0, 12, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   };
 
   private static final int[] MAP1 =
   {
     /*   0 */ 54, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58,
     /*  26 */ 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58,
-    /*  52 */ 58, 58, 90, 144, 123, 123, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91,
-    /*  78 */ 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 109 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 7, 0, 8, 0, 0, 0, 9, 0, 10, 0, 0, 0, 0, 0, 0, 11,
-    /* 144 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 3, 0, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0
+    /*  52 */ 58, 58, 90, 132, 162, 162, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+    /*  74 */ 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 14, 0, 0, 0, 0, 0, 0, 0,
+    /*  98 */ 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    /* 133 */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 3, 4, 0, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 7, 0, 0, 8,
+    /* 168 */ 0, 9, 0, 0, 0, 10, 0, 11, 0, 0, 12, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   };
 
   private static final int[] INITIAL =
   {
-    /* 0 */ 1, 2, 3, 4
+    /* 0 */ 1, 2, 3, 4, 5
   };
 
   private static final int[] TRANSITION =
   {
-    /*   0 */ 53, 53, 53, 53, 53, 53, 52, 53, 58, 53, 52, 53, 53, 75, 53, 53, 63, 68, 72, 53, 84, 89, 72, 53, 80, 53,
-    /*  26 */ 53, 53, 53, 93, 78, 53, 54, 53, 53, 53, 59, 53, 53, 53, 64, 53, 53, 53, 85, 53, 53, 53, 96, 53, 53, 53,
-    /*  52 */ 11, 0, 0, 0, 0, 80, 5, 0, 0, 0, 96, 38, 0, 0, 0, 112, 38, 0, 39, 42, 43, 42, 43, 0, 8, 8, 0, 9, 0, 0, 64,
-    /*  83 */ 64, 39, 0, 0, 0, 128, 39, 0, 39, 42, 0, 9, 9, 0, 48, 48, 48
+    /*   0 */ 121, 121, 116, 120, 121, 112, 30, 112, 32, 121, 40, 55, 47, 55, 73, 121, 65, 60, 78, 121, 83, 121, 88,
+    /*  23 */ 121, 93, 121, 98, 121, 106, 121, 6, 0, 0, 0, 0, 0, 0, 0, 10, 10, 39, 0, 0, 0, 0, 39, 0, 40, 0, 0, 0, 0,
+    /*  52 */ 40, 0, 40, 0, 44, 45, 44, 45, 0, 0, 0, 11, 0, 0, 0, 0, 96, 96, 0, 11, 11, 0, 0, 80, 80, 80, 0, 0, 0, 112,
+    /*  82 */ 112, 0, 0, 0, 128, 128, 0, 0, 0, 144, 144, 0, 0, 0, 160, 160, 0, 0, 0, 176, 176, 0, 0, 0, 0, 64, 64, 64,
+    /* 110 */ 64, 0, 0, 0, 13, 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0
   };
 
   private static final int[] EXPECTED =
   {
-    /*  0 */ 6, 3, 3, 2, 2, 2, 2, 4, 12, 252
+    /*  0 */ 2, 8, 24, 2040, 2044, 2, 2, 2, 4, 2, 2, 2, 2
   };
 
   private static final String[] TOKEN =
   {
     "(0)",
     "double",
+    "ws",
     "eof",
     "'B'",
+    "'E'",
     "'G'",
     "'K'",
     "'M'",
+    "'P'",
     "'T'"
   };
 }

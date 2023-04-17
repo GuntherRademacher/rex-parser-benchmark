@@ -6,7 +6,6 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,8 +21,6 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 import de.bottlecaps.rex.benchmark.json.Chart.Builder;
-import de.bottlecaps.rex.benchmark.json.Chart.LinearSizeFormat;
-import de.bottlecaps.rex.benchmark.json.Chart.LogarithmicSizeFormat;
 import de.bottlecaps.rex.benchmark.json.parsers.DummyJsonNodeFactory;
 import de.bottlecaps.rex.benchmark.json.parsers.Parser;
 import de.bottlecaps.rex.benchmark.json.parsers.ResultFactory;
@@ -69,7 +66,9 @@ public class Benchmark {
           }
         }
         catch (Throwable e) {
-          String msg = parser.name() + "(" + name + "): " + e.getMessage();
+          String msg = parser.name() + "(" + name + "): "
+                     + e.getClass().getSimpleName() + ": "
+                     + e.getMessage();
           System.out.println(msg);
           System.out.println();
         }
@@ -160,12 +159,10 @@ public class Benchmark {
             parser.clear();
             long parsedSize = 0;
             long start = System.currentTimeMillis();
-  //          System.out.println("Used Memory before gc: " + Chart.formatSize(MemoryMonitor.memoryUsed(), 0));
             MemoryMonitor.triggerGC();
             long initialMemoryUsed = memoryMonitor.resetMaxMemoryUsed();
             if (commandLine.heapDumpAt() != null)
               memoryMonitor.setHeapDumpAt(initialMemoryUsed + commandLine.heapDumpAt());
-  //          System.out.println("Used Memory  after gc: " + Chart.formatSize(initialMemoryUsed, 0));
             for (;;) {
               for (String input : files.values())
                 parser.parse(input);
@@ -183,8 +180,8 @@ public class Benchmark {
           commandLine.testParsers().stream().sorted().forEach(p -> {
             String size = Chart.formatSize(p.getParsedSize(), 1);
             double seconds = p.getRuntime() / 1000.0;
-            String speed = Chart.formatSize((long) (1e3 * p.getParsedSize() / p.getRuntime()), 1);
-            String maxSpeed = Chart.formatSize((long) (p.getMaxSpeed().doubleValue() * 1e3), 1);
+            String speed = Chart.formatSize(1024.0 * p.getParsedSize() / p.getRuntime(), 1);
+            String maxSpeed = Chart.formatSize(p.getMaxSpeed().doubleValue() * 1024.0, 1);
             String maxMemory = Chart.formatSize(p.getMaxMemory(), 1);
             if (initial)
               System.out.println(String.format(Locale.US, "%20s: parsed %s in %.1f sec (%s/sec), max memory: %s",
@@ -197,21 +194,20 @@ public class Benchmark {
 
           try (PrintStream throughputCsv = new PrintStream("throughput.csv", StandardCharsets.UTF_8);
                PrintStream memoryCsv = new PrintStream("memory.csv", StandardCharsets.UTF_8)) {
-            String header = "log" + commandLine.factor() + "(inputSize),"
+            String header = "inputSize,"
                     + commandLine.testParsers().stream().map(Parser::name).collect(Collectors.joining(","));
             throughputCsv.println(header);
             memoryCsv.println(header);
             for (int s = 0; s < sizeSeries.size(); ++s) {
               int sizeIndex = s;
               String throughputList = commandLine.testParsers().stream()
-                  .map(p -> String.valueOf(p.getSpeedSeries().get(sizeIndex).floatValue()))
+                  .map(p -> String.valueOf(p.getSpeedSeries().get(sizeIndex)))
                   .collect(Collectors.joining(","));
-              float logarithmicSize = (float) (Math.log(sizeSeries.get(s)) / Math.log(commandLine.factor()));
-              throughputCsv.println(logarithmicSize + "," + throughputList);
+              throughputCsv.println(sizeSeries.get(s) + "," + throughputList);
               String memoryList = commandLine.testParsers().stream()
-                  .map(p -> String.valueOf(p.getMemorySeries().get(sizeIndex).floatValue() / 1e6))
+                  .map(p -> String.valueOf(p.getMemorySeries().get(sizeIndex) / (1024.0 * 1024.0)))
                   .collect(Collectors.joining(","));
-              memoryCsv.println(logarithmicSize + "," + memoryList);
+              memoryCsv.println(sizeSeries.get(s) + "," + memoryList);
             }
           }
 
@@ -274,29 +270,19 @@ public class Benchmark {
   }
 
   public static void csvToPng() throws IOException {
-//    String csv = "log2(inputSize),ANTLR4,Grammatica,Hand-crafted,Jackson,JacksonO,JavaCC,REx\n"
-//        + "12.962112,33113.227,14492.541,319122.9,296666.62,315033.4,67010.07,124262.78\n"
-//        + "13.962384,43772.832,19087.824,344585.47,332386.5,359224.25,70540.13,119837.1\n"
-//        + "14.96252,41702.74,18474.467,321796.44,271273.53,280746.56,67544.19,126881.375..."
     String[][] throughputCsv = readCsv("throughput.csv");
     String[][] memoryCsv = readCsv("memory.csv");
-    int base = Integer.parseInt(throughputCsv[0][0].substring("log".length(), throughputCsv[0][0].indexOf('(')));
     Builder builder = new Builder()
-        .chartTitle("Parser Throughput by Input Size")
-        .xAxisFormat(new LogarithmicSizeFormat(base))
+        .chartTitle("Parser Performance")
         .xAxisLabel("Input Size")
-        .yAxisLabel1("Throughput (KB/sec)")
+        .yAxisLabel1("Throughput per Second")
         .yAxisLabel2("Maximum Heap Size")
         ;
     for (int column = 1; column < memoryCsv[0].length; ++column) {
       String label = memoryCsv[0][column];
-      builder.addSeries1(label, series(throughputCsv, column, 1e0));
-      builder.addSeries2(label, series(memoryCsv, column, 1e6));
+      builder.addSeries1(label, series(throughputCsv, column, 1024.0));
+      builder.addSeries2(label, series(memoryCsv, column, 1024.0 * 1024.0));
     }
-    DecimalFormat yAxisFormat = new DecimalFormat();
-    yAxisFormat.setGroupingUsed(false);
-    builder.yAxisFormat1(yAxisFormat);
-    builder.yAxisFormat2(new LinearSizeFormat());
     Chart chart1 = builder.build1();
     chart1.writeToFile("throughput.png");
     Chart chart2 = builder.build2();

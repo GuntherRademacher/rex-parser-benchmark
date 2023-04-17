@@ -83,7 +83,7 @@ public class HandCrafted extends AbstractJsonParser {
   }
 
   private static class HandCraftedJsonLexer {
-    private String input;
+    private char[] input;
     private int size;
     private int index;
     private StringBuilder stringBuilder;
@@ -93,8 +93,8 @@ public class HandCrafted extends AbstractJsonParser {
     private double doubleValue;
 
     public HandCraftedJsonLexer(String input) {
-      this.input = input;
-      this.size = input.length();
+      this.input = input.toCharArray();
+      this.size = this.input.length;
       this.index = 0;
       this.stringBuilder = new StringBuilder();
     }
@@ -202,7 +202,7 @@ public class HandCrafted extends AbstractJsonParser {
     }
 
     private int nextChar() {
-      return index < size ? input.charAt(index++) : -1;
+      return index < size ? input[index++] : -1;
     }
 
     private void nextChar(char expectedChar) {
@@ -250,29 +250,36 @@ public class HandCrafted extends AbstractJsonParser {
       throw new IllegalStateException();
     }
 
+    private int indexOf(char chr, int end) {
+      for (int i = index; i < end; ++i)
+          if (input[i] == chr)
+              return i;
+      return -1;
+    }
+
     private Token string() {
-      int end = input.indexOf('"', index);
+      int end = indexOf('"', size);
       if (end < 0)
         error();
-      stringValue = input.substring(index, end);
-      if (stringValue.indexOf('\\') < 0) {
-        for (int i = 0; i < stringValue.length(); ++i)
-          if (stringValue.charAt(i) < ' ')
+
+      if (indexOf('\\', end) < 0) {
+        for (int i = index; i < end; ++i)
+          if (input[i] < ' ')
             error();
+        stringValue = new String(input, index, end - index);
         index = end + 1;
         return Token.STRING;
       }
       stringBuilder.setLength(0);
-      int begin = index;
-      for (;;) {
+      for (int begin = index;;) {
         int c = nextChar();
         switch (c) {
         case '"':
-          stringBuilder.append(input.substring(begin, index - 1));
+          stringBuilder.append(input, begin, index - 1 - begin);
           stringValue = stringBuilder.toString();
           return Token.STRING;
         case '\\':
-          stringBuilder.append(input.substring(begin, index - 1));
+          stringBuilder.append(input, begin, index - 1 - begin);
           begin = index + 1;
           switch (nextChar()) {
           case -1:
@@ -306,7 +313,7 @@ public class HandCrafted extends AbstractJsonParser {
             if (index + 4 > size)
               error();
             try {
-              stringBuilder.append(unhex(input.substring(index, index + 4)));
+              stringBuilder.append(unhex(new String(input, index, 4)));
             }
             catch (NumberFormatException e) {
               error();
@@ -369,11 +376,11 @@ public class HandCrafted extends AbstractJsonParser {
         break;
       }
       try {
-        intValue = Integer.parseInt(input.substring(begin, end));
+        intValue = Integer.parseInt(new String(input, begin, end - begin));
         return Token.INTEGER;
       }
       catch (NumberFormatException e) {
-        longValue = Long.parseLong(input.substring(begin, end));
+        longValue = Long.parseLong(new String(input, begin, end - begin));
         return Token.LONG;
       }
     }
@@ -408,7 +415,7 @@ public class HandCrafted extends AbstractJsonParser {
         }
         break;
       }
-      doubleValue = Double.parseDouble(input.substring(begin, end));
+      doubleValue = Double.parseDouble(new String(input, begin, end - begin));
       return Token.DOUBLE;
     }
 
@@ -445,7 +452,7 @@ public class HandCrafted extends AbstractJsonParser {
         }
         break;
       }
-      doubleValue = Double.parseDouble(input.substring(begin, end));
+      doubleValue = Double.parseDouble(new String(input, begin, end - begin));
       return Token.DOUBLE;
     }
   }

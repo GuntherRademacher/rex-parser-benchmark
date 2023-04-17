@@ -24,37 +24,43 @@ public class MemoryMonitor extends Thread {
 
     @Override
     public void run() {
-        while (running) {
-            long usedMemory = memoryUsed();
-            if (usedMemory > maxMemoryUsed.get()) {
-                maxMemoryUsed.set(usedMemory);
-                if (! dumped) {
-                  long limit = heapDumpAt.get();
-                  if (limit > 0 && usedMemory >= limit) {
-                    dumped = true;
-                    File file = new File("java_" + ProcessHandle.current().pid() + ".hprof");
-                    if (file.exists())
-                      file.delete();
-                    String filename = file.getAbsolutePath();
-                    try {
-                      dumpHeap(filename, true);
-                    }
-                    catch (IOException e) {
-                      System.err.println("failed to write heap dump:");
-                      e.printStackTrace(System.err);
-                    }
-                    System.err.println("heap memory limit reached - dumped heap to " + filename);
-                  }
-                }
-            }
-
+      while (running) {
+        long maxMemory = updateMaxMemoryUsed();
+        if (!dumped) {
+          long limit = heapDumpAt.get();
+          if (limit > 0 && maxMemory >= limit) {
+            dumped = true;
+            File file = new File("java_" + ProcessHandle.current().pid() + ".hprof");
+            if (file.exists())
+              file.delete();
+            String filename = file.getAbsolutePath();
             try {
-                Thread.sleep(100);
+              dumpHeap(filename, true);
             }
-            catch (InterruptedException e) {
-                e.printStackTrace();
+            catch (IOException e) {
+              System.err.println("failed to write heap dump:");
+              e.printStackTrace(System.err);
             }
+            System.err.println("heap memory limit reached - dumped heap to " + filename);
+          }
         }
+        try {
+          Thread.sleep(100);
+        }
+        catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+    private long updateMaxMemoryUsed() {
+      long usedMemory = memoryUsed();
+      long maxMemory = maxMemoryUsed.get();
+      if (usedMemory > maxMemory) {
+        maxMemory = usedMemory;
+        maxMemoryUsed.set(maxMemory);
+      }
+      return maxMemory;
     }
 
     public void setHeapDumpAt(Long size) {
@@ -87,6 +93,6 @@ public class MemoryMonitor extends Thread {
     }
 
     public long maxMemoryUsed() {
-        return maxMemoryUsed.get();
+      return updateMaxMemoryUsed();
     }
 }

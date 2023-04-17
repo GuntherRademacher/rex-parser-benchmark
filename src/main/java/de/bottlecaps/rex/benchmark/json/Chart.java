@@ -5,13 +5,13 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -20,14 +20,13 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.plot.CombinedDomainXYPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.ui.RectangleEdge;
-import org.jfree.data.Range;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
@@ -36,8 +35,6 @@ public class Chart {
     chartTitle,
     xAxisLabel,
     yAxisLabel,
-    xAxisFormat,
-    yAxisFormat,
   }
 
   private final JFreeChart jFreeChart;
@@ -46,9 +43,6 @@ public class Chart {
     private final DefaultXYDataset dataset1 = new DefaultXYDataset();
     private final DefaultXYDataset dataset2 = new DefaultXYDataset();
     String chartTitle;
-    NumberFormat xAxisFormat;
-    NumberFormat yAxisFormat1;
-    NumberFormat yAxisFormat2;
     String xAxisLabel;
     String yAxisLabel1;
     String yAxisLabel2;
@@ -57,10 +51,6 @@ public class Chart {
       Map<Property, Object> props = new HashMap<>();
       if (yAxisLabel1 != null && xAxisLabel != null)
         props.put(Property.chartTitle, yAxisLabel1 + " by " + xAxisLabel);
-      if (xAxisFormat  != null)
-        props.put(Property.xAxisFormat, xAxisFormat);
-      if (yAxisFormat1  != null)
-        props.put(Property.yAxisFormat, yAxisFormat1);
       if (xAxisLabel  != null)
         props.put(Property.xAxisLabel, xAxisLabel);
       if (yAxisLabel1  != null)
@@ -72,10 +62,6 @@ public class Chart {
       Map<Property, Object> props = new HashMap<>();
       if (yAxisLabel2 != null && xAxisLabel != null)
         props.put(Property.chartTitle, yAxisLabel2 + " by " + xAxisLabel);
-      if (xAxisFormat  != null)
-        props.put(Property.xAxisFormat, xAxisFormat);
-      if (yAxisFormat2  != null)
-        props.put(Property.yAxisFormat, yAxisFormat2);
       if (xAxisLabel  != null)
         props.put(Property.xAxisLabel, xAxisLabel);
       if (yAxisLabel2  != null)
@@ -84,28 +70,13 @@ public class Chart {
     }
 
     public Chart build() throws IOException {
-      return new Chart(chartTitle, xAxisLabel, xAxisFormat,
-          dataset1, yAxisLabel1, yAxisFormat1,
-          dataset2, yAxisLabel2, yAxisFormat2);
+      return new Chart(chartTitle, xAxisLabel,
+          dataset1, yAxisLabel1,
+          dataset2, yAxisLabel2);
     }
 
     public Builder chartTitle(String chartTitle) {
       this.chartTitle = chartTitle;
-      return this;
-    }
-
-    public Builder xAxisFormat(NumberFormat xAxisFormat) {
-      this.xAxisFormat = xAxisFormat;
-      return this;
-    }
-
-    public Builder yAxisFormat1(NumberFormat yAxisFormat) {
-      this.yAxisFormat1 = yAxisFormat;
-      return this;
-    }
-
-    public Builder yAxisFormat2(NumberFormat yAxisFormat) {
-      this.yAxisFormat2 = yAxisFormat;
       return this;
     }
 
@@ -135,54 +106,14 @@ public class Chart {
     }
   }
 
-  private Chart(String chartTitle, String xAxisLabel, NumberFormat xAxisFormat,
-      XYDataset dataset1, String yAxisLabel1, NumberFormat yAxisFormat1,
-      XYDataset dataset2, String yAxisLabel2, NumberFormat yAxisFormat2) throws IOException {
+  private Chart(String chartTitle, String xAxisLabel,
+      XYDataset dataset1, String yAxisLabel1,
+      XYDataset dataset2, String yAxisLabel2) throws IOException {
 
-    NumberAxis domainAxis = new NumberAxis(xAxisLabel);
-    domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-    if (xAxisFormat != null)
-      domainAxis.setNumberFormatOverride(xAxisFormat);
-
-    final CombinedDomainXYPlot plot = new CombinedDomainXYPlot(domainAxis);
+    final CombinedDomainXYPlot plot = new CombinedDomainXYPlot(logAxis(xAxisLabel));
     plot.setOrientation(PlotOrientation.VERTICAL);
-
-    final NumberAxis rangeAxis1 = new NumberAxis(yAxisLabel1);
-    rangeAxis1.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-    rangeAxis1.setNumberFormatOverride(yAxisFormat1);
-    final XYPlot subPlot1 = new XYPlot(dataset1, null, rangeAxis1, new XYLineAndShapeRenderer(true, true));
-
-    final NumberAxis rangeAxis2 = new NumberAxis(yAxisLabel2);
-    rangeAxis2.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-    rangeAxis2.setNumberFormatOverride(yAxisFormat2);
-    final XYPlot subPlot2 = new XYPlot(dataset2, null, rangeAxis2, new XYLineAndShapeRenderer(true, true));
-
-    TreeSet<Double> xValues = new TreeSet<>();
-    double minX = Double.MAX_VALUE;
-    double maxX = Double.MIN_VALUE;
-    for (int series = 0; series < dataset1.getSeriesCount(); ++series)
-      for (int item = 0; item < dataset1.getItemCount(series); ++item) {
-        double x = dataset1.getXValue(series, item);
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        xValues.add(x);
-      }
-    for (int series = 0; series < dataset2.getSeriesCount(); ++series)
-      for (int item = 0; item < dataset1.getItemCount(series); ++item) {
-        double x = dataset1.getXValue(series, item);
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        xValues.add(x);
-      }
-    System.out.println("minX: " + minX);
-    System.out.println("maxX: " + maxX);
-    domainAxis.setRange(minX, maxX + 2);
-
-    plot.add(subPlot1, 1);
-    plot.add(subPlot2, 1);
-
-    domainAxis.setRange(new Range(12., 17.), false, false);
-
+    plot.add(new XYPlot(dataset1, null, logAxis(yAxisLabel1), new XYLineAndShapeRenderer(true, true)), 1);
+    plot.add(new XYPlot(dataset2, null, logAxis(yAxisLabel2), new XYLineAndShapeRenderer(true, true)), 1);
     jFreeChart = new JFreeChart(chartTitle, JFreeChart.DEFAULT_TITLE_FONT, plot, true);
     LegendTitle legend = jFreeChart.getLegend();
     legend.setPosition(RectangleEdge.TOP);
@@ -202,18 +133,16 @@ public class Chart {
     legend.setPosition(RectangleEdge.RIGHT);
     XYPlot plot = (XYPlot) jFreeChart.getPlot();
     plot.setRenderer(new XYLineAndShapeRenderer(true, true));
+    plot.setDomainAxis(logAxis((String) props.get(Property.xAxisLabel)));
+    plot.setRangeAxis(logAxis((String) props.get(Property.yAxisLabel)));
+  }
 
-    NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
-    NumberFormat xAxisFormat = (NumberFormat) props.get(Property.xAxisFormat);
-    if (xAxisFormat != null)
-      xAxis.setNumberFormatOverride(xAxisFormat);
 
-    NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
-    yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-    NumberFormat yAxisformat = (NumberFormat) props.get(Property.yAxisFormat);
-    if (yAxisformat != null)
-      yAxis.setNumberFormatOverride(yAxisformat);
-
+  private static LogAxis logAxis(String label) {
+    LogAxis axis = new LogAxis(label);
+    axis.setBase(2);
+    axis.setNumberFormatOverride(new SizeFormat());
+    return axis;
   }
 
   public void writeToFile(String path) throws IOException {
@@ -241,53 +170,35 @@ public class Chart {
       });
   }
 
-  public static String formatSize(long size, int fractionDigits) {
-    String format = "%." + fractionDigits + "f ";
-    String[] formats = {
-        "%.0f B",
-        format + "kB",
-        format + "MB",
-        format + "GB",
-        format + "TB",
-        format + "PB",
-        format + "EB"};
-    int unit = size <= 0 ? 0 : (int) (Math.log10(size) / 3);
-    return String.format(Locale.US, formats[unit], size / Math.pow(1000, unit));
+  private static String[] units = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+
+  public static String formatSize(double size, int fractionDigits) {
+    if (size < 0 || fractionDigits < 0 || fractionDigits > 3)
+      throw new IllegalArgumentException();
+    size *= 1.0000000000001;
+    int unit = size == 0 ? 0 : (int) (Math.log(size) / Math.log(2) / 10);
+    NumberFormat format = NumberFormat.getInstance(Locale.US);
+    format.setRoundingMode(RoundingMode.DOWN);
+    format.setGroupingUsed(false);
+    if (fractionDigits > 0) {
+      format.setMinimumFractionDigits(fractionDigits);
+      format.setMaximumFractionDigits(fractionDigits);
+    }
+    String formatted = format.format(size / Math.pow(2, 10 * unit));
+    if (fractionDigits == 0) {
+      formatted = formatted.substring(0, Math.min(4, formatted.length()));
+      if (formatted.endsWith("."))
+        formatted = formatted.substring(0, formatted.length() - 1);
+    }
+    return formatted + " " + units[unit];
   }
 
-  public static class LogarithmicSizeFormat extends NumberFormat {
+  public static class SizeFormat extends NumberFormat {
     private static final long serialVersionUID = -3657230198170622639L;
-    private int base;
-
-    public LogarithmicSizeFormat(int base) {
-      this.base = base;
-    }
-
-    @Override
-    public StringBuffer format(double log, StringBuffer sb, FieldPosition pos) {
-      return sb.append(formatSize((long) Math.pow(base, log), 0));
-    }
-
-    @Override
-    public StringBuffer format(long number, StringBuffer toAppendTo, FieldPosition pos) {
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Number parse(String source, ParsePosition parsePosition) {
-      throw new UnsupportedOperationException();
-    }
-  }
-
-  public static class LinearSizeFormat extends NumberFormat {
-    private static final long serialVersionUID = -3657230198170622639L;
-
-    public LinearSizeFormat() {
-    }
 
     @Override
     public StringBuffer format(double value, StringBuffer sb, FieldPosition pos) {
-      return sb.append(formatSize((long) value, 1));
+      return sb.append(formatSize(value, 0));
     }
 
     @Override

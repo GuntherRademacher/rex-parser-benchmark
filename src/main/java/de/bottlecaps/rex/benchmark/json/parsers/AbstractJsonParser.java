@@ -60,6 +60,6 @@ public abstract class AbstractJsonParser implements Parser {
 
   @Override
   public int compareTo(Parser other) {
-    return Integer.signum((int) (1e3 * (getMaxSpeed() - other.getMaxSpeed())));
+    return Integer.signum((int) (1024.0 * (getMaxSpeed() - other.getMaxSpeed())));
   }
 }

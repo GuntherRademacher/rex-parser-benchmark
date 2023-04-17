@@ -1,0 +1,55 @@
+                                        <?java
+                                          package de.bottlecaps.rex.benchmark.json;
+
+                                          public class Size
+                                          {
+                                            private double value;
+
+                                            private Size(CharSequence string)
+                                            {
+                                              initialize(string);
+                                            }
+                                            
+                                            public static long valueOf(String string)
+                                            {
+                                              Size parser = new Size(string);
+                                              try
+                                              {
+                                                parser.parse_size();
+                                              }
+                                              catch (ParseException e)
+                                              {
+                                                throw new RuntimeException(parser.getErrorMessage(e), e);
+                                              }
+                                              return (long) parser.value;
+                                            }
+                                        ?>
+
+size     ::= double                     <?java value = Double.parseDouble(input.subSequence(b0, e0).toString());?>
+             ws?
+             (
+                   'B'?
+             | 'K' 'B'?                 <?java value *= 1024.0;?>
+             | 'M' 'B'?                 <?java value *= 1024.0 * 1024.0;?>
+             | 'G' 'B'?                 <?java value *= 1024.0 * 1024.0 * 1024.0;?>
+             | 'T' 'B'?                 <?java value *= 1024.0 * 1024.0 * 1024.0 * 1024.0;?>
+             | 'P' 'B'?                 <?java value *= 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;?>
+             | 'E' 'B'?                 <?java value *= 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;?>
+             )
+             eof
+
+<?TOKENS?>
+
+double   ::= int ( frac? exp | frac exp? )?
+int      ::= '-'? ( digit | onenine digits )
+digits   ::= digit+
+digit    ::= '0'
+           | onenine
+onenine  ::= [1-9]
+frac     ::= '.' digits
+exp      ::= ( 'E' | 'e' ) sign digits
+sign     ::= ( '+' | '-' )?
+ws       ::= [ #x9]+
+eof      ::= $
+
+[A-Z]    == [a-z]

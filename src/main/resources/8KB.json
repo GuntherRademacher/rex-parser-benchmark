@@ -39,7 +39,7 @@
     "phone": "+1 (860) 492-2517",
     "address": "271 Fane Court, Stevens, District Of Columbia, 9069",
     "about": "Minim duis non velit ea consectetur consequat consectetur aute deserunt adipisicing cupidatat. Nulla nisi quis fugiat duis excepteur commodo aliqua officia incididunt qui velit.",
-    "registered": "Friday, October 10, 2014 12:13 PM",
+    "registered": "Tuesday, October 14, 2014 12:13 PM",
     "latitude": "46.945825",
     "longitude": "-129.785378",
     "tags": [
@@ -209,7 +209,7 @@
     "email": "delia.valencia@orbiflex.ca",
     "phone": "+1 (861) 582-3881",
     "address": "369 Clark Street, Kilbourne, Palau, 9274",
-    "about": "Mollit consectetur esse et anim adipisicing adipisicing occaecat consequat culpa. Amet aute excepteur eu magna incididunt tempor. Non quis occaecat aliqua labore occaecat laboris laboris.",
+    "about": "Non quis occaecat aliqua labore occaecat laboris laboris.",
     "registered": "Wednesday, June 5, 2019 12:02 PM",
     "latitude": "-66.996512",
     "longitude": "-52.452775",
@@ -250,7 +250,7 @@
     "favoriteFruit": "banana"
   },
   [
-    "\u0022", "\ufeff"
+    "\u0022", "\ufeff", "\r"
   ],
   {
     "_id": "5d08948249c6fd1630f54880",
