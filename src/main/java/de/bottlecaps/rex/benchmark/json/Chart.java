@@ -160,6 +160,8 @@ public class Chart {
           JFrame frame = new JFrame(title);
           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           ChartPanel chartPanel = new ChartPanel(jFreeChart, false);
+          chartPanel.setPreferredSize(new Dimension(828, 383
+              ));
           frame.add(chartPanel, BorderLayout.CENTER);
           frame.pack();
           frame.setLocationRelativeTo(null);
