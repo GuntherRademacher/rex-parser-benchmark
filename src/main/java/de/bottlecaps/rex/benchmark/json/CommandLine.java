@@ -15,13 +15,14 @@ import de.bottlecaps.rex.benchmark.json.parsers.java.JavaCC;
 import de.bottlecaps.rex.benchmark.json.parsers.java.REx_LALR;
 import de.bottlecaps.rex.benchmark.json.parsers.java.REx_LL;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseX;
-import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXIxml;
+import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXIxmlEarley;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLALR;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLALRExternal;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLL;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLLExternal;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.Saxon;
-import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonIxml;
+import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonIxmlEarley;
+import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonIxmlGLL;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonRExLALR;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonRExLALRExternal;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonRExLL;
@@ -45,13 +46,14 @@ public class CommandLine {
       new BaseXRExLALRExternal(),
       new BaseXRExLL(),
       new BaseXRExLALR(),
-      new BaseXIxml(),
+      new BaseXIxmlEarley(),
       new Saxon(),
       new SaxonRExLLExternal(),
       new SaxonRExLALRExternal(),
       new SaxonRExLL(),
       new SaxonRExLALR(),
-      new SaxonIxml(),
+      new SaxonIxmlEarley(),
+      new SaxonIxmlGLL(),
   };
 
   private List<Parser> testParsers;

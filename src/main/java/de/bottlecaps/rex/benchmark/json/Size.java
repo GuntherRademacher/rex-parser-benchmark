@@ -1,7 +1,7 @@
-// This file was generated on Sat Apr 15, 2023 11:21 (UTC+02) by REx v5.57 which is Copyright (c) 1979-2023 by Gunther Rademacher <grd@gmx.net>
-// REx command line: size.ebnf -java -a java -name de.bottlecaps.rex.benchmark.json.Size
+// This file was generated on Tue May 9, 2023 22:12 (UTC+02) by REx v5.57 which is Copyright (c) 1979-2023 by Gunther Rademacher <grd@gmx.net>
+// REx command line: Size.ebnf -java -a java -name de.bottlecaps.rex.benchmark.json.Size
 
-                                                            // line 2 "size.ebnf"
+                                                            // line 2 "Size.ebnf"
                                                             package de.bottlecaps.rex.benchmark.json;
 
                                                             public class Size
@@ -135,7 +135,7 @@
   {
     lookahead1(0);                  // double
     consume(1);                     // double
-                                                            // line 28 "size.ebnf"
+                                                            // line 28 "Size.ebnf"
                                                             value = Double.parseDouble(input.subSequence(b0, e0).toString());
                                                             // line 141 "Size.java"
     lookahead1(4);                  // ws | eof | 'B' | 'E' | 'G' | 'K' | 'M' | 'P' | 'T'
@@ -154,7 +154,7 @@
         {
           consume(4);               // 'B'
         }
-                                                            // line 32 "size.ebnf"
+                                                            // line 32 "Size.ebnf"
                                                             value *= 1024.0;
                                                             // line 160 "Size.java"
       }
@@ -167,7 +167,7 @@
         {
           consume(4);               // 'B'
         }
-                                                            // line 33 "size.ebnf"
+                                                            // line 33 "Size.ebnf"
                                                             value *= 1024.0 * 1024.0;
                                                             // line 173 "Size.java"
       }
@@ -180,7 +180,7 @@
         {
           consume(4);               // 'B'
         }
-                                                            // line 34 "size.ebnf"
+                                                            // line 34 "Size.ebnf"
                                                             value *= 1024.0 * 1024.0 * 1024.0;
                                                             // line 186 "Size.java"
       }
@@ -193,7 +193,7 @@
         {
           consume(4);               // 'B'
         }
-                                                            // line 35 "size.ebnf"
+                                                            // line 35 "Size.ebnf"
                                                             value *= 1024.0 * 1024.0 * 1024.0 * 1024.0;
                                                             // line 199 "Size.java"
       }
@@ -206,7 +206,7 @@
         {
           consume(4);               // 'B'
         }
-                                                            // line 36 "size.ebnf"
+                                                            // line 36 "Size.ebnf"
                                                             value *= 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;
                                                             // line 212 "Size.java"
       }
@@ -219,7 +219,7 @@
         {
           consume(4);               // 'B'
         }
-                                                            // line 37 "size.ebnf"
+                                                            // line 37 "Size.ebnf"
                                                             value *= 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0 * 1024.0;
                                                             // line 225 "Size.java"
       }

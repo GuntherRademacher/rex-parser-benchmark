@@ -9,7 +9,7 @@
                                             {
                                               initialize(string);
                                             }
-                                            
+
                                             public static long valueOf(String string)
                                             {
                                               Size parser = new Size(string);

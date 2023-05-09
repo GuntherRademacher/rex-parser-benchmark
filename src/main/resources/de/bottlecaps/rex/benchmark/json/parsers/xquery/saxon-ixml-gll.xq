@@ -4,7 +4,7 @@ import module namespace rip = 'rewrite-ixml-parse' at "src/main/resources/de/bot
 
 declare function local:invisible-xml($grammar as xs:string) as function(xs:string) as document-node()
 {
-  sacks:make-parser($grammar, map {})
+  sacks:make-parser($grammar, map {'parser': 'GLL'})
 };
 
 declare variable $input external;

@@ -31,6 +31,9 @@ import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.data.xy.XYDataset;
 
 public class Chart {
+  private static int CHART_WIDTH = 828;
+  private static int CHART_HEIGHT = 622;
+
   private static enum Property {
     chartTitle,
     xAxisLabel,
@@ -146,10 +149,7 @@ public class Chart {
   }
 
   public void writeToFile(String path) throws IOException {
-    Dimension preferredSize = new ChartPanel(jFreeChart, false).getPreferredSize();
-    int width = (int) preferredSize.getWidth();
-    int height = (int) preferredSize.getHeight();
-    ChartUtils.writeChartAsPNG(new FileOutputStream(path), jFreeChart, width, height);
+    ChartUtils.writeChartAsPNG(new FileOutputStream(path), jFreeChart, CHART_WIDTH, CHART_HEIGHT);
   }
 
   public void displayChart(String title) {
@@ -160,8 +160,7 @@ public class Chart {
           JFrame frame = new JFrame(title);
           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           ChartPanel chartPanel = new ChartPanel(jFreeChart, false);
-          chartPanel.setPreferredSize(new Dimension(828, 383
-              ));
+          chartPanel.setPreferredSize(new Dimension(CHART_WIDTH, CHART_HEIGHT));
           frame.add(chartPanel, BorderLayout.CENTER);
           frame.pack();
           frame.setLocationRelativeTo(null);
