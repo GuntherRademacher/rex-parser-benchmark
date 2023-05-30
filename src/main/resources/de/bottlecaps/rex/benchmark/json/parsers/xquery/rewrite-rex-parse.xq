@@ -60,5 +60,5 @@ declare function rrp:rewrite-rex-parse($parse-tree as element()) as document-nod
   if (empty($parse-tree/self::ERROR)) then
     document {rrp:rewrite-rex-parse($parse-tree, ())}
   else
-    error(xs:QName("rrp:parse"), concat("&#10;    ", replace($parse-tree, "&#10;", "&#10;    ")))
+    error(xs:QName("rrp:rewrite-rex-parse"), concat("&#10;    ", replace($parse-tree, "&#10;", "&#10;    ")))
 };

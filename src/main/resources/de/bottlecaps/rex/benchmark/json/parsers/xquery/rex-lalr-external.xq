@@ -1,5 +1,5 @@
 import module namespace rrp = "rewrite-rex-parse" at "src/main/resources/de/bottlecaps/rex/benchmark/json/parsers/xquery/rewrite-rex-parse.xq";
-declare namespace parser = "de/bottlecaps/rex/benchmark/json/parsers/xquery/RExLL";
+declare namespace parser = "de/bottlecaps/rex/benchmark/json/parsers/xquery/RExLALR";
 
 declare variable $input external;
 
