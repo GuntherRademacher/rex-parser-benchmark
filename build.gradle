@@ -13,15 +13,15 @@ repositories {
 }
 
 dependencies {
-    antlr 'org.antlr:antlr4:4.12.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    antlr 'org.antlr:antlr4:4.13.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     implementation 'org.jfree:jfreechart:1.5.4'
     implementation 'org.jfree:jcommon:1.0.24'
     implementation files('build/lib/grammatica-1.6.jar')
     implementation 'org.basex:basex:10.6'
-    implementation 'org.nineml:coffeefilter:2.1.0'
-    implementation 'org.nineml:coffeegrinder:2.1.0'
-    implementation 'org.nineml:coffeesacks:2.1.0'
+    implementation 'org.nineml:coffeefilter:2.2.1'
+    implementation 'org.nineml:coffeegrinder:2.2.1'
+    implementation 'org.nineml:coffeesacks:2.2.1'
     implementation 'net.sf.saxon:Saxon-HE:12.2'
     implementation 'org.xmlresolver:xmlresolver:5.1.2'
 }
