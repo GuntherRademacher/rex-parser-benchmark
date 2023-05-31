@@ -46,6 +46,7 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 | `BaseX`                |                    |                  | Java     | [BaseX][BaseX]         | Reference: [`fn:json-to-xml`][fn] |
 | `BaseXRExLL`           | [REx][Rex]         | [LL][LL]         | XQuery   | [BaseX][BaseX]         |                                   |
 | `BaseXRExLALR`         | [REx][Rex]         | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
+| `BaseXRExScannerlessGLRExternal`   | [REx][Rex]         | [GLR][GLR]         | Java     | [BaseX][BaseX]         |                                   |
 | `BaseXRExLLExternal`   | [REx][Rex]         | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
 | `BaseXRExLALRExternal` | [REx][Rex]         | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
 | `BaseXIxmlEarley`      | [CoffeeFilter][CF] | [Earley][Earley] | Java     | [BaseX][BaseX]         |                                   |
@@ -144,6 +145,7 @@ This project is subject to the [Apache 2 License][ASL].
 [LL]: https://en.wikipedia.org/wiki/LL_parser
 [GLL]: https://www.cs.rhul.ac.uk/research/languages/csle/GLLparsers.html
 [LALR]: https://en.wikipedia.org/wiki/LALR_parser
+[GLR]: https://en.wikipedia.org/wiki/GLR_parser
 [BaseX]: https://basex.org/
 [fn]: https://www.w3.org/TR/xpath-functions-31/#func-json-to-xml
 [SaxonJ-HE]: https://www.saxonica.com/products/products.xml

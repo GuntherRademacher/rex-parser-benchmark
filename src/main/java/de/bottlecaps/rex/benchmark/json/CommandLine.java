@@ -16,6 +16,7 @@ import de.bottlecaps.rex.benchmark.json.parsers.java.REx_LALR;
 import de.bottlecaps.rex.benchmark.json.parsers.java.REx_LL;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseX;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXIxmlEarley;
+import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExScannerlessGLRExternal;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLALR;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLALRExternal;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLL;
@@ -47,6 +48,7 @@ public class CommandLine {
       new BaseXRExLL(),
       new BaseXRExLALR(),
       new BaseXIxmlEarley(),
+      new BaseXRExScannerlessGLRExternal(),
       new Saxon(),
       new SaxonRExLLExternal(),
       new SaxonRExLALRExternal(),

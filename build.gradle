@@ -85,6 +85,11 @@ task rex {
             file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/parsers/xquery/RExLALR.java'),
             '-lalr 1 -java -basex -saxon -tree -name de.bottlecaps.rex.benchmark.json.parsers.xquery.RExLALR'
         )
+        rexGenerate(
+            file('src/main/rex/json-scannerless-bnf.ebnf'),
+            file('build/generated/rex/main/de/bottlecaps/rex/benchmark/json/parsers/xquery/RExScannerlessGLR.java'),
+            '-glalr 1 -java -basex -saxon -tree -name de.bottlecaps.rex.benchmark.json.parsers.xquery.RExScannerlessGLR'
+        )
     }
 }
 
