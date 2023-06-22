@@ -9,15 +9,15 @@ value         ::= map
                 | string
                 | boolean
                 | null
-map           ::= '{' _map_list_option ws '}'
-_map_list     ::= ws member
-                | _map_list ws ',' ws member
+map           ::= '{' ws _map_list_option '}'
+_map_list     ::= member ws
+                | _map_list ',' ws member ws
 _map_list_option
               ::=
                 | _map_list
-array         ::= '[' _array_list_option ws ']'
-_array_list   ::= ws value
-                | _array_list ws ',' ws value
+array         ::= '[' ws _array_list_option ']'
+_array_list   ::= value ws
+                | _array_list ',' ws value ws
 _array_list_option
               ::=
                 | _array_list
