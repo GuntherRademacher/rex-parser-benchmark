@@ -19,7 +19,7 @@ Benchmark results are dumped to these files:
 
 The benchmark covers two execution platforms:
 * Java - parsers generated as Java code for direct invocation from Java.
-* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX](https://basex.org/) or [SaxonJ-HE](https://www.saxonica.com/products/products.xml).
+* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX 10.8][BaseX] or [SaxonJ-HE 12.3][SaxonJ-HE].
 
 
 ## Available parsers in Java
@@ -28,15 +28,15 @@ The result of all parsers for Java is a [com.fasterxml.jackson.databind.JsonNode
 
 These parsers are available:
 
-| Parser Name   | Generator                | Algorithm               |                                                        |
-| :------------ | :----------------------: | :---------------------: | :----------------------------------------------------- |
-| `Jackson`     |                          |                         | Reference: [com.fasterxml.jackson.core.JsonParser][JP] |
-| `HandCrafted` |                          | [recursive descent][RD] |                                                        |
-| `REx_LL`      | [REx][Rex]               | [LL][LL]                |                                                        |
-| `REx_LALR`    | [REx][Rex]               | [LALR][LALR]            |                                                        |
-| `JavaCC`      | [JavaCC][JavaCC]         | [LL][LL]                |                                                        |
-| `ANTLR4`      | [ANTLR 4][ANTLR4]        | [LL][LL]                |                                                        |
-| `Grammatica`  | [Grammatica][Grammatica] | [LL][LL]                |                                                        |
+| Parser Name   | Generator                    | Algorithm               |                                                        |
+| :------------ | :--------------------------: | :---------------------: | :----------------------------------------------------- |
+| `Jackson`     |                              |                         | Reference: [com.fasterxml.jackson.core.JsonParser][JP] |
+| `HandCrafted` |                              | [recursive descent][RD] |                                                        |
+| `REx_LL`      | [REx 5.56][Rex]              | [LL][LL]                |                                                        |
+| `REx_LALR`    | [REx 5.56][Rex]              | [LALR][LALR]            |                                                        |
+| `JavaCC`      | [JavaCC 7.0.12][JavaCC]      | [LL][LL]                |                                                        |
+| `ANTLR4`      | [ANTLR 4.13.1][ANTLR4]       | [LL][LL]                |                                                        |
+| `Grammatica`  | [Grammatica 1.6][Grammatica] | [LL][LL]                |                                                        |
 
 ## Available parsers in XQuery
 The result of parsers for XQuery is an XML element as it would be produced by `fn:json-to-xml` (see definition in [XPath and XQuery 3.1 Functions and Operators](https://www.w3.org/TR/xpath-functions-31/#func-json-to-xml)).
@@ -44,18 +44,20 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 | Parser Name            | Generator          | Algorithm        | Language | XQuery Processor       |                                   |
 | :--------------------- | :----------------: | :--------------: | :------: | :--------------------: | :-------------------------------- |
 | `BaseX`                |                    |                  | Java     | [BaseX][BaseX]         | Reference: [`fn:json-to-xml`][fn] |
-| `BaseXRExLL`           | [REx][Rex]         | [LL][LL]         | XQuery   | [BaseX][BaseX]         |                                   |
-| `BaseXRExLALR`         | [REx][Rex]         | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
-| `BaseXRExLLExternal`   | [REx][Rex]         | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
-| `BaseXRExLALRExternal` | [REx][Rex]         | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
-| `BaseXIxmlEarley`      | [CoffeeFilter][CF] | [Earley][Earley] | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXRExLL`           | [REx 5.56][Rex]    | [LL][LL]         | XQuery   | [BaseX][BaseX]         |                                   |
+| `BaseXRExLALR`         | [REx 5.56][Rex]    | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
+| `BaseXRExLLExternal`   | [REx 5.56][Rex]    | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXRExLALRExternal` | [REx 5.56][Rex]    | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXIxml`            | [Markup Blitz][MB] | [GLR][GLR]       | Java     | [BaseX][BaseX]         |                                   |
 | `Saxon`                |                    |                  | Java     | [SaxonJ-HE][SaxonJ-HE] | Reference: [`fn:json-to-xml`][fn] |
-| `SaxonRExLL`           | [REx][Rex]         | [LL][LL]         | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLALR`         | [REx][Rex]         | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLLExternal`   | [REx][Rex]         | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLALRExternal` | [REx][Rex]         | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonIxmlGLL`         | [CoffeeFilter][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLL`           | [REx 5.56][Rex]    | [LL][LL]         | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLALR`         | [REx 5.56][Rex]    | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLLExternal`   | [REx 5.56][Rex]    | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLALRExternal` | [REx 5.56][Rex]    | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 | `SaxonIxmlEarley`      | [CoffeeFilter][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+<!-- disabled, waiting for https://github.com/nineml/nineml/issues/42
+| `SaxonIxmlGLL`         | [CoffeeFilter][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+-->
 
 ## Building rex-parser-benchmark
 
@@ -141,8 +143,10 @@ This project is subject to the [Apache 2 License][ASL].
 
 [ASL]: http://www.apache.org/licenses/LICENSE-2.0
 [REx]: https://bottlecaps.de/rex
+[MB]: https://github.com/GuntherRademacher/markup-blitz
 [LL]: https://en.wikipedia.org/wiki/LL_parser
 [GLL]: https://www.cs.rhul.ac.uk/research/languages/csle/GLLparsers.html
+[GLR]: https://en.wikipedia.org/wiki/GLR_parser
 [LALR]: https://en.wikipedia.org/wiki/LALR_parser
 [BaseX]: https://basex.org/
 [fn]: https://www.w3.org/TR/xpath-functions-31/#func-json-to-xml
