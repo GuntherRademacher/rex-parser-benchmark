@@ -94,7 +94,7 @@ def rexGenerate(ebnf, target, command) {
         def inputFileContent = ebnf.text
         mkdir target.parent
         println 'generating REx parser: ' + target.name
-        new URL('https://bottlecaps.de/rex').openConnection().with {
+        new URL('https://www.bottlecaps.de/rex').openConnection().with {
             addRequestProperty 'Content-Type', 'multipart/form-data; boundary=11c3f844-5603-4b02-8f16-fb4006d7b022'
             doOutput = true
             requestMethod = 'POST'
