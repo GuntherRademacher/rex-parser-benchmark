@@ -32,9 +32,9 @@ These parsers are available:
 | :------------ | :--------------------------: | :---------------------: | :----------------------------------------------------- |
 | `Jackson`     |                              |                         | Reference: [com.fasterxml.jackson.core.JsonParser][JP] |
 | `HandCrafted` |                              | [recursive descent][RD] |                                                        |
-| `REx_LL`      | [REx 5.56][Rex]              | [LL][LL]                |                                                        |
-| `REx_LALR`    | [REx 5.56][Rex]              | [LALR][LALR]            |                                                        |
-| `JavaCC`      | [JavaCC 7.0.12][JavaCC]      | [LL][LL]                |                                                        |
+| `REx_LL`      | [REx 5.57][Rex]              | [LL][LL]                |                                                        |
+| `REx_LALR`    | [REx 5.57][Rex]              | [LALR][LALR]            |                                                        |
+| `JavaCC`      | [JavaCC 7.0.13][JavaCC]      | [LL][LL]                |                                                        |
 | `ANTLR4`      | [ANTLR 4.13.1][ANTLR4]       | [LL][LL]                |                                                        |
 | `Grammatica`  | [Grammatica 1.6][Grammatica] | [LL][LL]                |                                                        |
 
@@ -44,18 +44,18 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 | Parser Name            | Generator          | Algorithm        | Language | XQuery Processor       |                                   |
 | :--------------------- | :----------------: | :--------------: | :------: | :--------------------: | :-------------------------------- |
 | `BaseX`                |                    |                  | Java     | [BaseX][BaseX]         | Reference: [`fn:json-to-xml`][fn] |
-| `BaseXRExLL`           | [REx 5.56][Rex]    | [LL][LL]         | XQuery   | [BaseX][BaseX]         |                                   |
-| `BaseXRExLALR`         | [REx 5.56][Rex]    | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
-| `BaseXRExLLExternal`   | [REx 5.56][Rex]    | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
-| `BaseXRExLALRExternal` | [REx 5.56][Rex]    | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXRExLL`           | [REx 5.57][Rex]    | [LL][LL]         | XQuery   | [BaseX][BaseX]         |                                   |
+| `BaseXRExLALR`         | [REx 5.57][Rex]    | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
+| `BaseXRExLLExternal`   | [REx 5.57][Rex]    | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXRExLALRExternal` | [REx 5.57][Rex]    | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
 | `BaseXIxml`            | [Markup Blitz][MB] | [GLR][GLR]       | Java     | [BaseX][BaseX]         |                                   |
 | `Saxon`                |                    |                  | Java     | [SaxonJ-HE][SaxonJ-HE] | Reference: [`fn:json-to-xml`][fn] |
-| `SaxonRExLL`           | [REx 5.56][Rex]    | [LL][LL]         | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLALR`         | [REx 5.56][Rex]    | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLLExternal`   | [REx 5.56][Rex]    | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLALRExternal` | [REx 5.56][Rex]    | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLL`           | [REx 5.57][Rex]    | [LL][LL]         | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLALR`         | [REx 5.57][Rex]    | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLLExternal`   | [REx 5.57][Rex]    | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLALRExternal` | [REx 5.57][Rex]    | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 | `SaxonIxmlEarley`      | [CoffeeFilter][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-<!-- disabled, waiting for https://github.com/nineml/nineml/issues/42
+<!-- disabled, waiting for https://github.com/nineml/nineml/issues/42 fix to be release (not in 3.2.6)
 | `SaxonIxmlGLL`         | [CoffeeFilter][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 -->
 

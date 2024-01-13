@@ -14,16 +14,16 @@ repositories {
 
 dependencies {
     antlr 'org.antlr:antlr4:4.13.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
     implementation 'org.jfree:jfreechart:1.5.4'
     implementation 'org.jfree:jcommon:1.0.24'
     implementation files('build/lib/grammatica-1.6.jar')
-    implementation 'org.basex:basex:10.8-SNAPSHOT'
-    implementation 'de.bottlecaps:markup-blitz:1.0'
+    implementation 'org.basex:basex:10.7'
+    implementation 'de.bottlecaps:markup-blitz:1.2'
     implementation 'org.nineml:coffeefilter:3.2.6'
     implementation 'org.nineml:coffeegrinder:3.2.6'
     implementation 'org.nineml:coffeesacks:3.2.6'
-    implementation 'net.sf.saxon:Saxon-HE:12.3'
+    implementation 'net.sf.saxon:Saxon-HE:12.4'
 }
 
 generateGrammarSource {
@@ -40,7 +40,7 @@ sourceSets {
 }
 
 javacc {
-    javaCCVersion '7.0.12'
+    javaCCVersion '7.0.13'
     configs {
         main {
             inputFile = file('src/main/javacc/JSON.jj')
