@@ -18,8 +18,8 @@ dependencies {
     implementation 'org.jfree:jfreechart:1.5.4'
     implementation 'org.jfree:jcommon:1.0.24'
     implementation files('build/lib/grammatica-1.6.jar')
-    implementation 'org.basex:basex:10.7'
-    implementation 'de.bottlecaps:markup-blitz:1.2'
+    implementation 'org.basex:basex:11.0-SNAPSHOT'
+    implementation 'de.bottlecaps:markup-blitz:1.3'
     implementation 'org.nineml:coffeefilter:3.2.6'
     implementation 'org.nineml:coffeegrinder:3.2.6'
     implementation 'org.nineml:coffeesacks:3.2.6'
