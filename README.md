@@ -19,7 +19,7 @@ Benchmark results are dumped to these files:
 
 The benchmark covers two execution platforms:
 * Java - parsers generated as Java code for direct invocation from Java.
-* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX 10.8][BaseX] or [SaxonJ-HE 12.3][SaxonJ-HE].
+* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX 11.2][BaseX] or [SaxonJ-HE 12.5][SaxonJ-HE].
 
 
 ## Available parsers in Java
@@ -35,7 +35,7 @@ These parsers are available:
 | `REx_LL`      | [REx 5.57][Rex]              | [LL][LL]                |                                                        |
 | `REx_LALR`    | [REx 5.57][Rex]              | [LALR][LALR]            |                                                        |
 | `JavaCC`      | [JavaCC 7.0.13][JavaCC]      | [LL][LL]                |                                                        |
-| `ANTLR4`      | [ANTLR 4.13.1][ANTLR4]       | [LL][LL]                |                                                        |
+| `ANTLR4`      | [ANTLR 4.13.2][ANTLR4]       | [LL][LL]                |                                                        |
 | `Grammatica`  | [Grammatica 1.6][Grammatica] | [LL][LL]                |                                                        |
 
 ## Available parsers in XQuery
