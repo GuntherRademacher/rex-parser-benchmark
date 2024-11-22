@@ -19,8 +19,7 @@ Benchmark results are dumped to these files:
 
 The benchmark covers two execution platforms:
 * Java - parsers generated as Java code for direct invocation from Java.
-* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX 11.2][BaseX] or [SaxonJ-HE 12.5][SaxonJ-HE].
-
+* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX 11.5][BaseX] or [SaxonJ-HE 12.5][SaxonJ-HE]. 
 
 ## Available parsers in Java
 
@@ -48,16 +47,14 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 | `BaseXRExLALR`         | [REx 5.57][Rex]    | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
 | `BaseXRExLLExternal`   | [REx 5.57][Rex]    | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
 | `BaseXRExLALRExternal` | [REx 5.57][Rex]    | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
-| `BaseXIxml`            | [Markup Blitz][MB] | [GLR][GLR]       | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXIxml`            | [Markup Blitz 1.4][MB] | [GLR][GLR]       | Java     | [BaseX][BaseX]         |                                   |
 | `Saxon`                |                    |                  | Java     | [SaxonJ-HE][SaxonJ-HE] | Reference: [`fn:json-to-xml`][fn] |
 | `SaxonRExLL`           | [REx 5.57][Rex]    | [LL][LL]         | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
 | `SaxonRExLALR`         | [REx 5.57][Rex]    | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
 | `SaxonRExLLExternal`   | [REx 5.57][Rex]    | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 | `SaxonRExLALRExternal` | [REx 5.57][Rex]    | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonIxmlEarley`      | [CoffeeFilter][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-<!-- disabled, waiting for https://github.com/nineml/nineml/issues/42 fix to be release (not in 3.2.6)
-| `SaxonIxmlGLL`         | [CoffeeFilter][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
--->
+| `SaxonIxmlEarley`      | [CoffeeFilter 3.2.7][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonIxmlGLL`         | [CoffeeFilter 3.2.7][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 
 ## Building rex-parser-benchmark
 

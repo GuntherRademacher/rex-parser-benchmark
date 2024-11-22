@@ -22,6 +22,7 @@ import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLL;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.BaseXRExLLExternal;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.Saxon;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonIxmlEarley;
+import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonIxmlGLL;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonRExLALR;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonRExLALRExternal;
 import de.bottlecaps.rex.benchmark.json.parsers.xquery.SaxonRExLL;
@@ -52,8 +53,7 @@ public class CommandLine {
       new SaxonRExLL(),
       new SaxonRExLALR(),
       new SaxonIxmlEarley(),
-//      disabled, waiting for https://github.com/nineml/nineml/issues/42
-//      new SaxonIxmlGLL(),
+      new SaxonIxmlGLL(),
   };
 
   private List<Parser> testParsers;
