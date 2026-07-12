@@ -9,17 +9,19 @@ Before the next test cycle, the input size is increased by a given factor. This 
 
 Test cycles are repeated until eventually an OutOfMemoryError will occur, or until a parser requires more than twenty times the requested parse time. The default parsing time is 10 seconds, so if a parser needs 200 seconds or more, the test will stop.
 
-Benchmark results are dumped to these files:
-* `throughput.csv`
-* `throughput.png`
-* `memory.csv`
-* `memory.png`
+Benchmark results are dumped to files named after the execution platform, e.g. for the Java platform:
+* `throughput-java.csv`
+* `throughput-java.png`
+* `memory-java.csv`
+* `memory-java.png`
+
+For the XQuery platform, the corresponding files are `throughput-xquery.*` and `memory-xquery.*`.
 
 ## Execution platforms
 
 The benchmark covers two execution platforms:
 * Java - parsers generated as Java code for direct invocation from Java.
-* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX 11.6][BaseX] or [SaxonJ-HE 12.5][SaxonJ-HE]. 
+* XQuery - parsers generated for use in XQuery, either generated as XQuery code, or generated as Java code for being used as an external function from XQuery, executed on [BaseX 12.4][BaseX] or [SaxonJ-HE 12.9][SaxonJ-HE]. 
 
 ## Available parsers in Java
 
@@ -31,8 +33,8 @@ These parsers are available:
 | :------------ | :--------------------------: | :---------------------: | :----------------------------------------------------- |
 | `Jackson`     |                              |                         | Reference: [com.fasterxml.jackson.core.JsonParser][JP] |
 | `HandCrafted` |                              | [recursive descent][RD] |                                                        |
-| `REx_LL`      | [REx 6.0][Rex]               | [LL][LL]                |                                                        |
-| `REx_LALR`    | [REx 6.0][Rex]               | [LALR][LALR]            |                                                        |
+| `REx_LL`      | [REx 6.2][Rex]               | [LL][LL]                |                                                        |
+| `REx_LALR`    | [REx 6.2][Rex]               | [LALR][LALR]            |                                                        |
 | `JavaCC`      | [JavaCC 7.0.13][JavaCC]      | [LL][LL]                |                                                        |
 | `ANTLR4`      | [ANTLR 4.13.2][ANTLR4]       | [LL][LL]                |                                                        |
 | `Grammatica`  | [Grammatica 1.6][Grammatica] | [LL][LL]                |                                                        |
@@ -43,22 +45,22 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 | Parser Name            | Generator          | Algorithm        | Language | XQuery Processor       |                                   |
 | :--------------------- | :----------------: | :--------------: | :------: | :--------------------: | :-------------------------------- |
 | `BaseX`                |                    |                  | Java     | [BaseX][BaseX]         | Reference: [`fn:json-to-xml`][fn] |
-| `BaseXRExLL`           | [REx 6.0][Rex]     | [LL][LL]         | XQuery   | [BaseX][BaseX]         |                                   |
-| `BaseXRExLALR`         | [REx 6.0][Rex]     | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
-| `BaseXRExLLExternal`   | [REx 6.0][Rex]     | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
-| `BaseXRExLALRExternal` | [REx 6.0][Rex]     | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
-| `BaseXIxml`            | [Markup Blitz 1.4][MB] | [GLR][GLR]       | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXRExLL`           | [REx 6.2][Rex]     | [LL][LL]         | XQuery   | [BaseX][BaseX]         |                                   |
+| `BaseXRExLALR`         | [REx 6.2][Rex]     | [LALR][LALR]     | XQuery   | [BaseX][BaseX]         |                                   |
+| `BaseXRExLLExternal`   | [REx 6.2][Rex]     | [LL][LL]         | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXRExLALRExternal` | [REx 6.2][Rex]     | [LALR][LALR]     | Java     | [BaseX][BaseX]         |                                   |
+| `BaseXIxml`            | [Markup Blitz 1.11][MB] | [GLR][GLR]       | Java     | [BaseX][BaseX]         |                                   |
 | `Saxon`                |                    |                  | Java     | [SaxonJ-HE][SaxonJ-HE] | Reference: [`fn:json-to-xml`][fn] |
-| `SaxonRExLL`           | [REx 6.0][Rex]     | [LL][LL]         | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLALR`         | [REx 6.0][Rex]     | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLLExternal`   | [REx 6.0][Rex]     | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonRExLALRExternal` | [REx 6.0][Rex]     | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonIxmlEarley`      | [CoffeeFilter 3.2.7][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonIxmlGLL`         | [CoffeeFilter 3.2.7][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLL`           | [REx 6.2][Rex]     | [LL][LL]         | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLALR`         | [REx 6.2][Rex]     | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLLExternal`   | [REx 6.2][Rex]     | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonRExLALRExternal` | [REx 6.2][Rex]     | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonIxmlEarley`      | [CoffeeFilter 3.3.10][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonIxmlGLL`         | [CoffeeFilter 3.3.10][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 
 ## Building rex-parser-benchmark
 
-Use Java 11 or higher to build.
+Use Java 21 or higher to build.
 
 For building `rex-parser-benchmark`, use these commands:
 
@@ -112,6 +114,8 @@ Usage: java Benchmark <OPTION>... [<FILE>|<DIRECTORY>]
                              after each test cycle (default 2)
   --nest                   nest JSON arrays, when increasing input size. By
                              default, a single top level array will be used.
+  --no-display             do not open result chart windows (for unattended
+                             runs; the PNG files are still written)
   --heapdump <SIZE>        dump heap when reaching <SIZE> (may contain fraction
                              and unit MB or GB) to file java_<PID>.hprof.
 ```

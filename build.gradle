@@ -1,29 +1,32 @@
 plugins {
     id 'java'
     id 'antlr'
-    id 'com.intershop.gradle.javacc' version '4.1.3'
+    id 'com.intershop.gradle.javacc' version '6.1.0'
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    maven {
-        url 'https://files.basex.org/maven/'
-    }
 }
 
 dependencies {
     antlr 'org.antlr:antlr4:4.13.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.1'
-    implementation 'org.jfree:jfreechart:1.5.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.1'
+    implementation 'org.jfree:jfreechart:1.5.6'
     implementation 'org.jfree:jcommon:1.0.24'
     implementation files('build/lib/grammatica-1.6.jar')
-    implementation 'org.basex:basex:11.6'
-    implementation 'de.bottlecaps:markup-blitz:1.4'
-    implementation 'org.nineml:coffeefilter:3.2.7'
-    implementation 'org.nineml:coffeegrinder:3.2.7'
-    implementation 'org.nineml:coffeesacks:3.2.7'
-    implementation 'net.sf.saxon:Saxon-HE:12.5'
+    implementation 'org.basex:basex:12.4'
+    implementation 'de.bottlecaps:markup-blitz:1.11'
+    implementation 'org.nineml:coffeefilter:3.3.10'
+    implementation 'org.nineml:coffeegrinder:3.3.10'
+    implementation 'org.nineml:coffeesacks:3.3.10'
+    implementation 'net.sf.saxon:Saxon-HE:12.9'
+}
+
+java {
+    // intershop javacc plugin 6.x requires JDK 21; enforce it so the build fails clearly on older JDKs
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 generateGrammarSource {
@@ -40,7 +43,7 @@ sourceSets {
 }
 
 javacc {
-    javaCCVersion '7.0.13'
+    javaCCVersion = '7.0.13'
     configs {
         main {
             inputFile = file('src/main/javacc/JSON.jj')
@@ -156,8 +159,8 @@ task grammaticaString(type: JavaExec) {
 }
 
 compileJava {
-    dependsOn rex, grammaticaJson, grammaticaString
-    options.compilerArgs += ["-Xlint:all"]
+    dependsOn generateGrammarSource, rex, grammaticaJson, grammaticaString
+    options.compilerArgs += ["-Xlint:all", "-Xlint:-this-escape"]
 }
 
 task run(type: JavaExec) {

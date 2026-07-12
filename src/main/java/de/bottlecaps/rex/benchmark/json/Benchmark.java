@@ -30,6 +30,10 @@ public class Benchmark {
   public static void main(String[] args) throws Exception {
     CommandLine commandLine = new CommandLine(args);
 
+    // --no-display implies headless: render PNGs offscreen so an asleep/locked display can't block Java2D
+    if (!commandLine.display())
+      System.setProperty("java.awt.headless", "true");
+
     if (commandLine.validation())
       ResultFactory.setJsonNodeFactory(JsonNodeFactory.instance);
     else
@@ -140,6 +144,7 @@ public class Benchmark {
     int factor = 1;
 
     MemoryMonitor memoryMonitor = new MemoryMonitor(null);
+    memoryMonitor.setDaemon(true);
     memoryMonitor.start();
 
     try {
@@ -192,8 +197,8 @@ public class Benchmark {
                       p.name(), size, seconds, speed, maxSpeed, maxMemory));
           });
 
-          try (PrintStream throughputCsv = new PrintStream("throughput.csv", StandardCharsets.UTF_8);
-               PrintStream memoryCsv = new PrintStream("memory.csv", StandardCharsets.UTF_8)) {
+          try (PrintStream throughputCsv = new PrintStream("throughput-" + commandLine.platform() + ".csv", StandardCharsets.UTF_8);
+               PrintStream memoryCsv = new PrintStream("memory-" + commandLine.platform() + ".csv", StandardCharsets.UTF_8)) {
             String header = "inputSize,"
                     + commandLine.testParsers().stream().map(Parser::name).collect(Collectors.joining(","));
             throughputCsv.println(header);
@@ -248,11 +253,13 @@ public class Benchmark {
     }
     catch (OutOfMemoryError e) {
       System.out.println("stopping, because an OutOfMemoryError was caught");
+    }
+    finally {
       memoryMonitor.stopMonitoring();
     }
 
     System.out.println("creating result chart...");
-    csvToPng();
+    csvToPng(commandLine.platform(), commandLine.display());
   }
 
   private static Map<String, String> getAllFiles(File dir, String extension, Map<String, String> contents)
@@ -269,9 +276,9 @@ public class Benchmark {
     return new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
   }
 
-  public static void csvToPng() throws IOException {
-    String[][] throughputCsv = readCsv("throughput.csv");
-    String[][] memoryCsv = readCsv("memory.csv");
+  public static void csvToPng(String platform, boolean display) throws IOException {
+    String[][] throughputCsv = readCsv("throughput-" + platform + ".csv");
+    String[][] memoryCsv = readCsv("memory-" + platform + ".csv");
     Builder builder = new Builder()
         .chartTitle("Parser Performance")
         .xAxisLabel("Input Size")
@@ -284,11 +291,13 @@ public class Benchmark {
       builder.addSeries2(label, series(memoryCsv, column, 1024.0 * 1024.0));
     }
     Chart chart1 = builder.build1();
-    chart1.writeToFile("throughput.png");
+    chart1.writeToFile("throughput-" + platform + ".png");
     Chart chart2 = builder.build2();
-    chart2.writeToFile("memory.png");
-    chart1.displayChart("Throughput");
-    chart2.displayChart("Memory");
+    chart2.writeToFile("memory-" + platform + ".png");
+    if (display) {
+      chart1.displayChart("Throughput");
+      chart2.displayChart("Memory");
+    }
   }
 
   private static double[][] series(String[][] lines, int column, double factor) {

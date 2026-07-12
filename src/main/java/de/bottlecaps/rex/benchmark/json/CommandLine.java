@@ -68,6 +68,7 @@ public class CommandLine {
   private int parseTime = 10;
   private int factor = 2;
   private boolean nest = false;
+  private boolean display = true;
   private Long heapDumpAt = null;
 
   public CommandLine(String[] args) {
@@ -126,6 +127,9 @@ public class CommandLine {
         break;
       case "--nest":
         nest = true;
+        break;
+      case "--no-display":
+        display = false;
         break;
       case "--heapdump":
         try {
@@ -192,9 +196,19 @@ public class CommandLine {
     System.out.println("                             after each test cycle (default 2)");
     System.out.println("  --nest                   nest JSON arrays, when increasing input size. By");
     System.out.println("                             default, a single top level array will be used.");
+    System.out.println("  --no-display             do not open result chart windows (for unattended");
+    System.out.println("                             runs; the PNG files are still written)");
     System.out.println("  --heapdump <SIZE>        dump heap when reaching <SIZE> (may contain fraction");
     System.out.println("                             and unit MB or GB) to file java_<PID>.hprof.");
     System.exit(status);
+  }
+
+  public String platform() {
+    return platform.name().toLowerCase();
+  }
+
+  public boolean display() {
+    return display;
   }
 
   public boolean validation() {

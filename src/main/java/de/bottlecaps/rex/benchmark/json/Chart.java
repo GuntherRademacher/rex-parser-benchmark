@@ -214,6 +214,6 @@ public class Chart {
   }
 
   public static void main(String[] args) throws IOException {
-    Benchmark.csvToPng();
+    Benchmark.csvToPng(args.length > 0 ? args[0] : "java", true);
   }
 }
