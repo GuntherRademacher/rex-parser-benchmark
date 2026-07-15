@@ -126,6 +126,13 @@ So for running the XQuery benchmark on file `src/main/resources/8KB.json`, use t
 gradlew run --args="--platform xquery src/main/resources/8KB.json"
 ```
 
+For profiling a run with Java Flight Recorder, add the Gradle project property `PROFILE`.
+The recording will be written to `build/reports/run-profile.jfr`.
+
+```sh
+gradlew run -PPROFILE --args="--platform xquery src/main/resources/8KB.json"
+```
+
 ## Benchmark results - Java
 
 ![throughput-java](throughput-java.png)

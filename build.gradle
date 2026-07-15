@@ -166,5 +166,13 @@ compileJava {
 task run(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath
     jvmArgs '-Dfile.encoding=utf-8'
+    if (project.hasProperty('PROFILE')) {
+        def jfrFile = layout.buildDirectory.file('reports/run-profile.jfr').get().asFile
+        doFirst {
+            jfrFile.parentFile.mkdirs()
+        }
+        jvmArgs "-XX:StartFlightRecording=filename=${jfrFile},settings=profile,dumponexit=true"
+        println "JFR profiling enabled - output: ${jfrFile}"
+    }
     mainClass = 'de.bottlecaps.rex.benchmark.json.Benchmark'
 }
