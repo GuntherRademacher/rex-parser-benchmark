@@ -55,8 +55,8 @@ The result of parsers for XQuery is an XML element as it would be produced by `f
 | `SaxonRExLALR`         | [REx 6.2][Rex]     | [LALR][LALR]     | XQuery   | [SaxonJ-HE][SaxonJ-HE] |                                   |
 | `SaxonRExLLExternal`   | [REx 6.2][Rex]     | [LL][LL]         | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 | `SaxonRExLALRExternal` | [REx 6.2][Rex]     | [LALR][LALR]     | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonIxmlEarley`      | [CoffeeFilter 3.3.10][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
-| `SaxonIxmlGLL`         | [CoffeeFilter 3.3.10][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonIxmlEarley`      | [CoffeeFilter 3.3.14][CF] | [Earley][Earley] | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
+| `SaxonIxmlGLL`         | [CoffeeFilter 3.3.14][CF] | [GLL][GLL]       | Java     | [SaxonJ-HE][SaxonJ-HE] |                                   |
 
 ## Building rex-parser-benchmark
 

@@ -5,6 +5,7 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -16,14 +17,13 @@ dependencies {
     implementation files('build/lib/grammatica-1.6.jar')
     implementation 'org.basex:basex:12.4'
     implementation 'de.bottlecaps:markup-blitz:1.11'
-    implementation 'org.nineml:coffeefilter:3.3.10'
-    implementation 'org.nineml:coffeegrinder:3.3.10'
-    implementation 'org.nineml:coffeesacks:3.3.10'
+    implementation 'org.nineml:coffeefilter:3.3.14'
+    implementation 'org.nineml:coffeegrinder:3.3.14'
+    implementation 'org.nineml:coffeesacks:3.3.14'
     implementation 'net.sf.saxon:Saxon-HE:12.9'
 }
 
 java {
-    // intershop javacc plugin 6.x requires JDK 21; enforce it so the build fails clearly on older JDKs
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
